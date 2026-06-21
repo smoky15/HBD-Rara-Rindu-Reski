@@ -697,24 +697,6 @@
             font-weight: 300;
         }
 
-        #musicToggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: rgba(233, 30, 99, 0.8);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-            color: #fff;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-
         @media (max-width: 600px) {
             .landing-content {
                 padding: 30px 25px;
@@ -841,10 +823,8 @@
     </div>
 
     <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/o3cawt.mp3" type="audio/mpeg">
     </audio>
-
-    <button id="musicToggle">🔇</button>
 
     <script>
         var loadingScreen = document.getElementById('loadingScreen');
@@ -934,7 +914,6 @@
         }
 
         var audio = document.getElementById('bgMusic');
-        var musicToggle = document.getElementById('musicToggle');
         var musicStarted = false;
         audio.volume = 0.5;
         audio.loop = true;
@@ -943,19 +922,13 @@
             if (musicStarted) return;
             audio.play().then(function() {
                 musicStarted = true;
-                musicToggle.textContent = '🔊';
-                musicToggle.style.background = 'rgba(233,30,99,0.8)';
                 console.log('🎵 Musik menyala!');
             }).catch(function(err) {
                 console.log('❌ Gagal play:', err);
-                musicToggle.textContent = '🔇';
-                // Coba lagi setelah user klik
                 document.addEventListener('click', function firstClick() {
                     if (!musicStarted) {
                         audio.play().then(function() {
                             musicStarted = true;
-                            musicToggle.textContent = '🔊';
-                            musicToggle.style.background = 'rgba(233,30,99,0.8)';
                             console.log('🎵 Musik menyala (klik)!');
                         }).catch(function() {});
                     }
@@ -963,22 +936,6 @@
                 }, { once: true });
             });
         }
-
-        musicToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (audio.paused) {
-                audio.play().then(function() {
-                    musicStarted = true;
-                    this.textContent = '🔊';
-                    this.style.background = 'rgba(233,30,99,0.8)';
-                }.bind(this)).catch(function() {});
-            } else {
-                audio.pause();
-                musicStarted = false;
-                this.textContent = '🔇';
-                this.style.background = 'rgba(100,100,100,0.6)';
-            }
-        });
 
         var landing = document.getElementById('landing');
         var envelopePage = document.getElementById('envelopePage');
