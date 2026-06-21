@@ -371,44 +371,6 @@
             }
         }
 
-        .envelope-letter {
-            position: absolute;
-            bottom: 15%;
-            left: 50%;
-            transform: translateX(-50%) translateY(100%);
-            width: 88%;
-            height: 58%;
-            background: #fffdf7;
-            border-radius: 10px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            padding: 18px 16px;
-            opacity: 0;
-            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 1px solid rgba(233, 30, 99, 0.1);
-            overflow: hidden;
-            z-index: 2;
-        }
-
-        #envelopeCard.open .envelope-letter {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-20px);
-        }
-
-        .envelope-letter-preview {
-            font-family: 'Dancing Script', cursive;
-            font-size: 13px;
-            color: #6a1b4d;
-            text-align: center;
-            line-height: 1.6;
-            opacity: 0.7;
-        }
-
-        .envelope-letter-preview .big {
-            font-size: 26px;
-            display: block;
-            margin-bottom: 5px;
-        }
-
         .envelope-hint {
             font-family: 'Poppins', sans-serif;
             font-size: 16px;
@@ -438,11 +400,16 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease, transform 1.5s ease;
+            transform: scale(1.2);
         }
 
         #letterPage.active {
             opacity: 1;
             pointer-events: auto;
+            transform: scale(1);
         }
 
         .letter-card {
@@ -456,14 +423,6 @@
             border: 1px solid rgba(233, 30, 99, 0.08);
             overflow-y: auto;
             position: relative;
-            transform: translateY(30px);
-            opacity: 0;
-            transition: all 1s ease;
-        }
-
-        #letterPage.active .letter-card {
-            transform: translateY(0);
-            opacity: 1;
         }
 
         .letter-card::-webkit-scrollbar {
@@ -494,19 +453,6 @@
             animation: blink 0.7s infinite;
             vertical-align: text-bottom;
             margin-left: 2px;
-        }
-
-        .letter-content .highlight {
-            color: #e91e63;
-            font-weight: 700;
-        }
-
-        .letter-content .sign {
-            display: block;
-            text-align: right;
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #ad1457;
         }
 
         .btn-next {
@@ -818,7 +764,7 @@
     <div id="loadingScreen">
         <div class="loading-title">Loading Love ❤️</div>
         <div class="loading-number" id="loadingNumber">0<span class="percent">%</span></div>
-        <div class="loading-text">Mempersiapkan kejutan untuk kesayangan bee 🤭</div>
+        <div class="loading-text">Mempersiapkan kejutan untuk sayang bee 🤭</div>
         <div class="loading-progress-bar">
             <div class="fill" id="loadingFill"></div>
         </div>
@@ -830,7 +776,7 @@
             <div class="landing-title">Happy Birthday ❤️</div>
             <div class="landing-name">Sayangku Cintaku ❤️</div>
             <div class="landing-sub" id="typewriter"></div>
-            <button class="btn-enter" id="btnEnter">Click To Enter Our World 💕</button>
+            <button class="btn-enter" id="btnEnter">🎵 Click To Enter Our World 💕</button>
         </div>
     </div>
 
@@ -842,12 +788,6 @@
                     <div class="envelope-flap"></div>
                     <div class="envelope-body"></div>
                     <div class="envelope-heart" id="envelopeHeart">❤️</div>
-                    <div class="envelope-letter">
-                        <div class="envelope-letter-preview">
-                            <span class="big">💌</span>
-                            Untuk Sayang 🤭
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="envelope-hint" id="envelopeHint">Click The Heart ❤️</div>
@@ -974,13 +914,29 @@
 
         const audio = document.getElementById('bgMusic');
         let musicStarted = false;
+        audio.volume = 0.5;
+        audio.loop = true;
 
         function startMusic() {
             if (!musicStarted) {
-                audio.play().catch(() => {});
-                musicStarted = true;
+                audio.play().then(() => {
+                    musicStarted = true;
+                    console.log('Musik mulai diputar');
+                }).catch((err) => {
+                    console.log('Audio play gagal:', err);
+                });
             }
         }
+
+        document.addEventListener('click', function firstClick() {
+            if (!musicStarted) {
+                audio.play().then(() => {
+                    musicStarted = true;
+                    console.log('Musik mulai diputar (click)');
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', firstClick);
+        });
 
         const landing = document.getElementById('landing');
         const envelopePage = document.getElementById('envelopePage');
@@ -1016,7 +972,7 @@
             envelopeOpened = true;
 
             envelopeCard.classList.add('open');
-            envelopeHint.textContent = '💌 Surat terbuka...';
+            envelopeHint.textContent = '💌 Membuka surat...';
 
             setTimeout(() => {
                 envelopePage.classList.remove('active');
@@ -1027,7 +983,7 @@
                     letterPage.classList.add('active');
                     startLetterTypewriter();
                 }, 1200);
-            }, 1800);
+            }, 1500);
         });
 
         envelopeWrapper.addEventListener('click', function(e) {
