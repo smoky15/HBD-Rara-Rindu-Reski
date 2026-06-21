@@ -1,23 +1,463 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Happy Birthday Rara ❤️</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow-x:hidden;
+    background:#f8f1e7;
+}
+
+section{
+    min-height:100vh;
+    display:none;
+    position:relative;
+}
+
+.active{
+    display:flex;
+}
+
+/* =========================
+   FLOATING ITEMS
+========================= */
+
+.float{
+    position:fixed;
+    bottom:-50px;
+    font-size:25px;
+    z-index:1;
+    animation:floatUp linear infinite;
+    pointer-events:none;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(0);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    to{
+        transform:translateY(-120vh);
+        opacity:0;
+    }
+}
+
+/* =========================
+   LANDING
+========================= */
+
+#landing{
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    flex-direction:column;
+}
+
+.title{
+    font-size:4rem;
+    color:#ff5ca8;
+}
+
+.name{
+    margin-top:15px;
+    font-size:2rem;
+    color:#8e44ad;
+}
+
+#typing{
+    margin-top:25px;
+    max-width:700px;
+    font-size:1.2rem;
+    color:#555;
+    min-height:80px;
+}
+
+.btn{
+    margin-top:40px;
+    border:none;
+    cursor:pointer;
+    padding:18px 40px;
+    border-radius:999px;
+    background:#ff6eb4;
+    color:white;
+    font-size:1rem;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-5px);
+}
+
+/* =========================
+   LETTER
+========================= */
+
+#letter{
+    background:#fff6fa;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding:40px;
+}
+
+.letter-box{
+    max-width:850px;
+    background:white;
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.letter-box h2{
+    color:#ff4f94;
+    margin-bottom:20px;
+}
+
+.letter-text{
+    line-height:1.8;
+    color:#555;
+    white-space:pre-line;
+}
+
+/* =========================
+   GALLERY
+========================= */
+
+#gallery{
+    background:linear-gradient(
+        135deg,
+        #fdf5f8,
+        #f4f0ff
+    );
+
+    flex-direction:column;
+    align-items:center;
+    padding:80px 20px;
+}
+
+.gallery-title{
+    font-size:2.5rem;
+    color:#ff5ca8;
+    margin-bottom:50px;
+}
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:30px;
+    width:100%;
+    max-width:1200px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    transition:.35s;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.card:hover{
+    transform:
+    translateY(-15px)
+    scale(1.02);
+
+    box-shadow:
+    0 20px 40px
+    rgba(255,105,180,.25);
+}
+
+.card img{
+    width:100%;
+    height:340px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card-content h3{
+    color:#ff5ca8;
+    margin-bottom:10px;
+}
+
+.card-content p{
+    color:#666;
+}
+
+/* ========================= */
+
+.next-wrap{
+    margin-top:60px;
+}
+
+/* ========================= */
+
+@media(max-width:768px){
+
+.title{
+    font-size:2.5rem;
+}
+
+.name{
+    font-size:1.3rem;
+}
+
+}
+
+</style>
 </head>
 <body>
-    <div class="cursor"></div>
-    <div class="container">
-        <h1>Happy Birthday Kesayangan Bee ❤️</h1>
-        <div class="greeting"></div>
-        <button class="cta-button">klick me 💕</button>
+
+<audio id="bgMusic" loop>
+    <source src="music/penjaga-hati.mp3" type="audio/mpeg">
+</audio>
+
+<!-- LANDING -->
+
+<section id="landing" class="active">
+
+    <h1 class="title">
+        Happy Birthday ❤️
+    </h1>
+
+    <div class="name">
+        Rara Rindu Reski
     </div>
 
-    <script src="script.js">
-        
-    </script>
+    <div id="typing"></div>
+
+    <button class="btn" onclick="openLetter()">
+        Click To Enter Our World 💕
+    </button>
+
+</section>
+
+<!-- LETTER -->
+
+<section id="letter">
+
+    <div class="letter-box">
+
+        <h2>
+            💌 A Letter For My Favorite Human
+        </h2>
+
+        <div class="letter-text">
+
+happy birthday sayangku cintaku yg santik dan sumel 🤭🤭🤭🤭🤭🤭🤭🤭😚😚😚❤️❤️❤️❤️❤️
+
+panjang umur dan sehat selalu turus ya sayang 🤭🤭🤭🤭🤭😚😚❤️❤️❤️
+
+semoga apa yang sayang harapkan akan secepatnya terwujud, semoga semua yang sayang cita-citakan akan terwujud, amiinn....
+
+selamat ke yg 21 tahun sayang 🤭🤭
+
+tetap jadi pribadi yg baik seperti ini terus ya sayang ❤️
+
+semangat terus dan semoga rezeki sayang lancar terus 🤭❤️
+
+masiyu ya sayang sudah bertahan sejauh ini ❤️
+
+sekali lagi samat ulang tahun cinta nya bee ❤️
+
+        </div>
+
+        <div class="next-wrap">
+
+            <button class="btn"
+            onclick="openGallery()">
+
+                Next Memory 📸
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- GALLERY -->
+
+<section id="gallery">
+
+    <h2 class="gallery-title">
+        Our Beautiful Moments Together ❤️
+    </h2>
+
+    <div class="gallery-grid">
+
+        <div class="card">
+            <img src="foto/1.jpeg">
+            <div class="card-content">
+                <h3>Beautiful Memory</h3>
+                <p>Edit freely later ✨</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="foto/2.jpg">
+            <div class="card-content">
+                <h3>Beautiful Memory</h3>
+                <p>Edit freely later ✨</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="foto/3.jpeg">
+            <div class="card-content">
+                <h3>Beautiful Memory</h3>
+                <p>Edit freely later ✨</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="foto/4.jpg">
+            <div class="card-content">
+                <h3>Beautiful Memory</h3>
+                <p>Edit freely later ✨</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="foto/5.jpg">
+            <div class="card-content">
+                <h3>Beautiful Memory</h3>
+                <p>Edit freely later ✨</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="next-wrap">
+
+        <button class="btn">
+            One Last Surprise 🌌
+        </button>
+
+    </div>
+
+</section>
+
+<script>
+
+/* TYPEWRITER */
+
+const text =
+"Today is not just a birthday. Today is the day the world was blessed with someone incredibly special ❤️";
+
+let i = 0;
+
+function typeWriter(){
+
+    if(i < text.length){
+
+        document.getElementById("typing")
+        .innerHTML += text.charAt(i);
+
+        i++;
+
+        setTimeout(typeWriter,45);
+    }
+
+}
+
+typeWriter();
+
+/* FLOATING */
+
+const icons = [
+"❤️","🌸","💖","✨","🦋"
+];
+
+function createFloat(){
+
+    const item =
+    document.createElement("div");
+
+    item.classList.add("float");
+
+    item.innerHTML =
+    icons[Math.floor(
+    Math.random()*icons.length)];
+
+    item.style.left =
+    Math.random()*100 + "vw";
+
+    item.style.animationDuration =
+    (8 + Math.random()*8) + "s";
+
+    document.body.appendChild(item);
+
+    setTimeout(()=>{
+        item.remove();
+    },16000);
+
+}
+
+setInterval(createFloat,400);
+
+/* PAGE */
+
+function hideAll(){
+
+    document.querySelectorAll("section")
+    .forEach(el=>{
+
+        el.classList.remove("active");
+
+    });
+
+}
+
+function openLetter(){
+
+    document
+    .getElementById("bgMusic")
+    .play();
+
+    hideAll();
+
+    document
+    .getElementById("letter")
+    .classList.add("active");
+
+}
+
+function openGallery(){
+
+    hideAll();
+
+    document
+    .getElementById("gallery")
+    .classList.add("active");
+
+}
+
+</script>
+
 </body>
 </html>
