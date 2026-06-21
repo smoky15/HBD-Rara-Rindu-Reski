@@ -823,25 +823,27 @@
     </div>
 
     <audio id="bgMusic" loop preload="auto">
-        <source src="music/penjaga-hati.mp3" type="audio/mpeg">
+        <source src="./music/penjaga-hati.mp3" type="audio/mpeg">
     </audio>
 
-    <script>
-        const loadingScreen = document.getElementById('loadingScreen');
-        const loadingNumber = document.getElementById('loadingNumber');
-        const loadingFill = document.getElementById('loadingFill');
+    <button id="musicToggle" style="position:fixed;top:20px;right:20px;z-index:9999;background:rgba(233,30,99,0.8);border:none;border-radius:50%;width:50px;height:50px;font-size:24px;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(233,30,99,0.4);backdrop-filter:blur(10px);transition:all 0.3s;">🔇</button>
 
-        let loadProgress = 0;
+    <script>
+        var loadingScreen = document.getElementById('loadingScreen');
+        var loadingNumber = document.getElementById('loadingNumber');
+        var loadingFill = document.getElementById('loadingFill');
+
+        var loadProgress = 0;
 
         function simulateLoading() {
-            const interval = setInterval(() => {
+            var interval = setInterval(function() {
                 loadProgress += Math.random() * 6 + 3;
                 if (loadProgress >= 100) {
                     loadProgress = 100;
                     clearInterval(interval);
-                    setTimeout(() => {
+                    setTimeout(function() {
                         loadingScreen.classList.add('hide');
-                        setTimeout(() => {
+                        setTimeout(function() {
                             loadingScreen.style.display = 'none';
                             startTypewriter();
                         }, 1500);
@@ -852,20 +854,21 @@
         }
 
         function updateLoading(progress) {
-            const percent = Math.min(100, Math.round(progress));
+            var percent = Math.min(100, Math.round(progress));
             loadingNumber.innerHTML = percent + '<span class="percent">%</span>';
             loadingFill.style.width = percent + '%';
         }
 
         simulateLoading();
 
-        const floatingEmojis = ['❤️', '🌸', '✨', '🦋', '💖'];
+        var floatingEmojis = ['❤️', '🌸', '✨', '🦋', '💖'];
 
-        function createFloatingElements(containerId, count = 25) {
-            const container = document.getElementById(containerId);
+        function createFloatingElements(containerId, count) {
+            count = count || 25;
+            var container = document.getElementById(containerId);
             if (!container) return;
-            for (let i = 0; i < count; i++) {
-                const el = document.createElement('div');
+            for (var i = 0; i < count; i++) {
+                var el = document.createElement('div');
                 el.className = 'float-item';
                 el.textContent = floatingEmojis[Math.floor(Math.random() * floatingEmojis.length)];
                 el.style.left = Math.random() * 100 + '%';
@@ -880,31 +883,30 @@
         createFloatingElements('floatingContainer', 30);
         createFloatingElements('envelopeFloating', 20);
 
-        const typewriterText =
-            `Today is not just a birthday...\nToday is the day the world\nwas blessed with someone\nincredibly special ❤️`;
+        var typewriterText = 'Today is not just a birthday...\nToday is the day the world\nwas blessed with someone\nincredibly special ❤️';
 
-        let typewriterStarted = false;
+        var typewriterStarted = false;
 
         function startTypewriter() {
             if (typewriterStarted) return;
             typewriterStarted = true;
-            const element = document.getElementById('typewriter');
-            let index = 0;
+            var element = document.getElementById('typewriter');
+            var index = 0;
             element.innerHTML = '';
 
             function type() {
                 if (index < typewriterText.length) {
-                    const char = typewriterText[index];
+                    var char = typewriterText[index];
                     if (char === '\n') {
                         element.innerHTML += '<br>';
                     } else {
                         element.innerHTML += char;
                     }
                     index++;
-                    const delay = 50 + (Math.random() * 30 - 15);
+                    var delay = 50 + (Math.random() * 30 - 15);
                     setTimeout(type, delay);
                 } else {
-                    const cursor = document.createElement('span');
+                    var cursor = document.createElement('span');
                     cursor.className = 'cursor';
                     element.appendChild(cursor);
                 }
@@ -912,59 +914,73 @@
             type();
         }
 
-        const audio = document.getElementById('bgMusic');
-        let musicStarted = false;
+        var audio = document.getElementById('bgMusic');
+        var musicToggle = document.getElementById('musicToggle');
+        var musicStarted = false;
         audio.volume = 0.5;
         audio.loop = true;
 
-        function startMusic() {
-            if (!musicStarted) {
-                audio.play().then(() => {
-                    musicStarted = true;
-                    console.log('Musik mulai diputar');
-                }).catch((err) => {
-                    console.log('Audio play gagal:', err);
-                });
-            }
+        function playMusic() {
+            audio.play().then(function() {
+                musicStarted = true;
+                musicToggle.textContent = '🔊';
+                musicToggle.style.background = 'rgba(233,30,99,0.8)';
+                console.log('🎵 Musik menyala!');
+            }).catch(function(err) {
+                console.log('❌ Gagal play:', err);
+                musicToggle.textContent = '🔇';
+            });
         }
+
+        musicToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (audio.paused) {
+                playMusic();
+            } else {
+                audio.pause();
+                musicStarted = false;
+                this.textContent = '🔇';
+                this.style.background = 'rgba(100,100,100,0.6)';
+            }
+        });
+
+        setTimeout(playMusic, 1000);
 
         document.addEventListener('click', function firstClick() {
             if (!musicStarted) {
-                audio.play().then(() => {
-                    musicStarted = true;
-                    console.log('Musik mulai diputar (click)');
-                }).catch(() => {});
+                playMusic();
             }
             document.removeEventListener('click', firstClick);
-        });
+        }, { once: true });
 
-        const landing = document.getElementById('landing');
-        const envelopePage = document.getElementById('envelopePage');
-        const btnEnter = document.getElementById('btnEnter');
+        var landing = document.getElementById('landing');
+        var envelopePage = document.getElementById('envelopePage');
+        var btnEnter = document.getElementById('btnEnter');
 
         btnEnter.addEventListener('click', function() {
-            startMusic();
+            if (!musicStarted) {
+                playMusic();
+            }
             landing.classList.remove('active');
             landing.classList.add('fade-out');
-            setTimeout(() => {
+            setTimeout(function() {
                 landing.style.display = 'none';
                 envelopePage.classList.add('active');
             }, 1200);
         });
 
-        const envelopeWrapper = document.getElementById('envelopeWrapper');
-        const envelopeCard = document.getElementById('envelopeCard');
-        const envelopeHeart = document.getElementById('envelopeHeart');
-        const envelopeHint = document.getElementById('envelopeHint');
-        const letterPage = document.getElementById('letterPage');
-        const letterContent = document.getElementById('letterContent');
-        const btnNext = document.getElementById('btnNext');
+        var envelopeWrapper = document.getElementById('envelopeWrapper');
+        var envelopeCard = document.getElementById('envelopeCard');
+        var envelopeHeart = document.getElementById('envelopeHeart');
+        var envelopeHint = document.getElementById('envelopeHint');
+        var letterPage = document.getElementById('letterPage');
+        var letterContent = document.getElementById('letterContent');
+        var btnNext = document.getElementById('btnNext');
 
-        let envelopeOpened = false;
-        let letterTypingDone = false;
+        var envelopeOpened = false;
+        var letterTypingDone = false;
 
-        const letterText =
-            `happy birthday sayangku cintaku yg santik dan sumel 🤭🤭🤭🤭🤭🤭🤭🤭😚😚😚❤️❤️❤️❤️❤️, panjang umur dan sehat selalu turus ya sayang 🤭🤭🤭🤭🤭😚😚❤️❤️❤️, semoga apa yang sayang harapkan akan secepatnya terwujud, semoga semua yang sayang cita" kan akan terwujud, amiinn....., selamat ke yg 21 tahun sayang 🤭🤭 tidak kerasa sudah makin dewasa dan zuga tambah hot oh oh oh haaa mantap 🤭🤭🤭🤭🤭, tetap jadi pribadi yg baik seperti ini terus ya sayang, dan zuga kurang kurangi kumel kumel nya, jangan banyak memarah, kurang kurangi makanan manis manisan karna yg bulehnya maam kuntol sahaja ahhahahahayyy ukay ukay acc 🤭🤭🤭🤭, semangat terus dan semoga rezeki sayang lancar trus mau dari segi apapun itu 🤭🤭, masiyu ya sayang sudah bertahan sejauh ini dan masih menerima bee kembali untuk bersama" menjalani hubungan ini, masiyu untuk semuanya bee senang sekali bisa bertemu dengan sayang, masiyu untuk semuanya ya sayang ☹️☹️☹️🤭🤭🤭😚😚❤️❤️❤️, sekali lagi samat ulang tahun cinta nya bee 🤭🤭🤭🤭🤭🤭😚😚😚😚😚😚❤️❤️❤️❤️❤️`;
+        var letterText = 'happy birthday sayangku cintaku yg santik dan sumel 🤭🤭🤭🤭🤭🤭🤭🤭😚😚😚❤️❤️❤️❤️❤️, panjang umur dan sehat selalu turus ya sayang 🤭🤭🤭🤭🤭😚😚❤️❤️❤️, semoga apa yang sayang harapkan akan secepatnya terwujud, semoga semua yang sayang cita" kan akan terwujud, amiinn....., selamat ke yg 21 tahun sayang 🤭🤭 tidak kerasa sudah makin dewasa dan zuga tambah hot oh oh oh haaa mantap 🤭🤭🤭🤭🤭, tetap jadi pribadi yg baik seperti ini terus ya sayang, dan zuga kurang kurangi kumel kumel nya, jangan banyak memarah, kurang kurangi makanan manis manisan karna yg bulehnya maam kuntol sahaja ahhahahahayyy ukay ukay acc 🤭🤭🤭🤭, semangat terus dan semoga rezeki sayang lancar trus mau dari segi apapun itu 🤭🤭, masiyu ya sayang sudah bertahan sejauh ini dan masih menerima bee kembali untuk bersama" menjalani hubungan ini, masiyu untuk semuanya bee senang sekali bisa bertemu dengan sayang, masiyu untuk semuanya ya sayang ☹️☹️☹️🤭🤭🤭😚😚❤️❤️❤️, sekali lagi samat ulang tahun cinta nya bee 🤭🤭🤭🤭🤭🤭😚😚😚😚😚😚❤️❤️❤️❤️❤️';
 
         envelopeHeart.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -974,11 +990,11 @@
             envelopeCard.classList.add('open');
             envelopeHint.textContent = '💌 Membuka surat...';
 
-            setTimeout(() => {
+            setTimeout(function() {
                 envelopePage.classList.remove('active');
                 envelopePage.classList.add('fade-out');
 
-                setTimeout(() => {
+                setTimeout(function() {
                     envelopePage.style.display = 'none';
                     letterPage.classList.add('active');
                     startLetterTypewriter();
@@ -993,19 +1009,19 @@
         });
 
         function startLetterTypewriter() {
-            let index = 0;
+            var index = 0;
             letterContent.innerHTML = '';
 
             function typeLetter() {
                 if (index < letterText.length) {
-                    const char = letterText[index];
+                    var char = letterText[index];
                     if (char === '\n') {
                         letterContent.innerHTML += '<br>';
                     } else {
                         letterContent.innerHTML += char;
                     }
                     index++;
-                    const delay = 25 + (Math.random() * 20);
+                    var delay = 25 + (Math.random() * 20);
                     setTimeout(typeLetter, delay);
                 } else {
                     letterTypingDone = true;
@@ -1016,20 +1032,20 @@
             setTimeout(typeLetter, 600);
         }
 
-        const galleryPage = document.getElementById('gallery');
+        var galleryPage = document.getElementById('gallery');
 
         btnNext.addEventListener('click', function() {
             if (!letterTypingDone) return;
             letterPage.classList.remove('active');
             letterPage.classList.add('fade-out');
-            setTimeout(() => {
+            setTimeout(function() {
                 letterPage.style.display = 'none';
                 galleryPage.classList.add('active');
                 initGallery();
             }, 1200);
         });
 
-        const galleryData = [
+        var galleryData = [
             { img: 'foto/1.jpeg', title: 'First Meet', desc: 'Awal dari segalanya ❤️' },
             { img: 'foto/2.jpg', title: 'Beautiful Smile', desc: 'Senyum yang selalu kurindukan' },
             { img: 'foto/3.jpeg', title: 'Together', desc: 'Setiap detik bersamamu berharga' },
@@ -1037,61 +1053,58 @@
             { img: 'foto/5.jpg', title: 'Forever', desc: 'Untuk selamanya ❤️' }
         ];
 
-        let galleryInitialized = false;
+        var galleryInitialized = false;
 
         function initGallery() {
             if (galleryInitialized) return;
             galleryInitialized = true;
-            const grid = document.getElementById('galleryGrid');
+            var grid = document.getElementById('galleryGrid');
             grid.innerHTML = '';
-            galleryData.forEach((item, index) => {
-                const card = document.createElement('div');
+            galleryData.forEach(function(item, index) {
+                var card = document.createElement('div');
                 card.className = 'gallery-card';
-                card.innerHTML = `
-                    <img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f8bbd0%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2230%22%3E📸%3C/text%3E%3C/svg%3E'">
-                    <div class="card-info">
-                        <h4>${item.title}</h4>
-                        <p>${item.desc}</p>
-                    </div>
-                `;
+                card.innerHTML = '<img src="' + item.img + '" alt="' + item.title +
+                    '" loading="lazy" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23f8bbd0%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2230%22%3E📸%3C/text%3E%3C/svg%3E\'">' +
+                    '<div class="card-info"><h4>' + item.title + '</h4><p>' + item.desc +
+                    '</p></div>';
                 grid.appendChild(card);
-                setTimeout(() => {
+                setTimeout(function() {
                     card.classList.add('visible');
                 }, 200 + index * 180);
             });
         }
 
-        const galaxyPage = document.getElementById('galaxy');
-        const btnGalaxy = document.getElementById('btnGalaxy');
+        var galaxyPage = document.getElementById('galaxy');
+        var btnGalaxy = document.getElementById('btnGalaxy');
 
         btnGalaxy.addEventListener('click', function() {
             galleryPage.classList.remove('active');
             galleryPage.classList.add('fade-out');
-            setTimeout(() => {
+            setTimeout(function() {
                 galleryPage.style.display = 'none';
                 galaxyPage.classList.add('active');
                 initGalaxy();
             }, 1200);
         });
 
-        let galaxyInitialized = false;
-        let scene, camera, renderer, controls;
-        let planetSystem, ringSystem;
-        let animationId;
-        let finalMessageShown = false;
-        let zoomCheckInterval = null;
-        let galaxyReady = false;
+        var galaxyInitialized = false;
+        var scene, camera, renderer, controls;
+        var planetSystem, ringSystem;
+        var animationId;
+        var finalMessageShown = false;
+        var zoomCheckInterval = null;
+        var galaxyReady = false;
 
         function initGalaxy() {
             if (galaxyInitialized) return;
             galaxyInitialized = true;
-            const loading = document.getElementById('galaxyLoading');
+            var loading = document.getElementById('galaxyLoading');
             loading.style.display = 'block';
 
-            const script = document.createElement('script');
+            var script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
             script.onload = function() {
-                const controlsScript = document.createElement('script');
+                var controlsScript = document.createElement('script');
                 controlsScript.src =
                     'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
                 controlsScript.onload = function() {
@@ -1110,19 +1123,19 @@
         }
 
         function createTextTexture(text) {
-            const canvas = document.createElement('canvas');
-            const size = 256;
+            var canvas = document.createElement('canvas');
+            var size = 256;
             canvas.width = size;
             canvas.height = size;
-            const ctx = canvas.getContext('2d');
+            var ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, size, size);
-            const fontSize = 34;
-            ctx.font = `bold ${fontSize}px 'Arial', sans-serif`;
+            var fontSize = 34;
+            ctx.font = 'bold ' + fontSize + 'px Arial, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.shadowColor = 'rgba(233, 30, 99, 0.8)';
             ctx.shadowBlur = 25;
-            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            var gradient = ctx.createLinearGradient(0, 0, size, size);
             gradient.addColorStop(0, '#ff80ab');
             gradient.addColorStop(0.5, '#e91e63');
             gradient.addColorStop(1, '#ad1457');
@@ -1133,17 +1146,17 @@
             ctx.globalAlpha = 0.1;
             ctx.fillText(text, size / 2 + 1, size / 2 + 1);
             ctx.globalAlpha = 1;
-            const texture = new THREE.CanvasTexture(canvas);
+            var texture = new THREE.CanvasTexture(canvas);
             texture.needsUpdate = true;
             return texture;
         }
 
         function setupGalaxyScene() {
-            const canvas = document.getElementById('galaxy-canvas');
-            const container = document.getElementById('galaxy');
+            var canvas = document.getElementById('galaxy-canvas');
+            var container = document.getElementById('galaxy');
 
             scene = new THREE.Scene();
-            const aspect = container.clientWidth / container.clientHeight;
+            var aspect = container.clientWidth / container.clientHeight;
             camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
             camera.position.set(0, 2, 18);
 
@@ -1167,14 +1180,14 @@
             controls.enabled = false;
             controls.update();
 
-            const texture = createTextTexture('Bee ❤️ sayang');
+            var texture = createTextTexture('Bee ❤️ sayang');
 
-            const planetCount = 5000;
-            const planetPos = new Float32Array(planetCount * 3);
-            const planetSizes = new Float32Array(planetCount);
-            const planetColors = new Float32Array(planetCount * 3);
+            var planetCount = 5000;
+            var planetPos = new Float32Array(planetCount * 3);
+            var planetSizes = new Float32Array(planetCount);
+            var planetColors = new Float32Array(planetCount * 3);
 
-            const colorPalette = [
+            var colorPalette = [
                 new THREE.Color('#ff80ab'),
                 new THREE.Color('#f06292'),
                 new THREE.Color('#e91e63'),
@@ -1185,28 +1198,28 @@
                 new THREE.Color('#c2185b'),
             ];
 
-            for (let i = 0; i < planetCount; i++) {
-                const radius = 2.5 + Math.random() * 2.0;
-                const theta = Math.random() * Math.PI * 2;
-                const phi = Math.acos(2 * Math.random() - 1);
+            for (var i = 0; i < planetCount; i++) {
+                var radius = 2.5 + Math.random() * 2.0;
+                var theta = Math.random() * Math.PI * 2;
+                var phi = Math.acos(2 * Math.random() - 1);
                 planetPos[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
                 planetPos[i * 3 + 1] = radius * Math.cos(phi);
                 planetPos[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
                 planetSizes[i] = 0.2 + Math.random() * 0.5;
-                const color = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
-                const brightness = 0.7 + Math.random() * 0.3;
+                var color = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
+                var brightness = 0.7 + Math.random() * 0.3;
                 color.multiplyScalar(brightness);
                 planetColors[i * 3] = color.r;
                 planetColors[i * 3 + 1] = color.g;
                 planetColors[i * 3 + 2] = color.b;
             }
 
-            const planetGeo = new THREE.BufferGeometry();
+            var planetGeo = new THREE.BufferGeometry();
             planetGeo.setAttribute('position', new THREE.BufferAttribute(planetPos, 3));
             planetGeo.setAttribute('size', new THREE.BufferAttribute(planetSizes, 1));
             planetGeo.setAttribute('color', new THREE.BufferAttribute(planetColors, 3));
 
-            const planetMat = new THREE.PointsMaterial({
+            var planetMat = new THREE.PointsMaterial({
                 size: 0.35,
                 map: texture,
                 blending: THREE.AdditiveBlending,
@@ -1220,34 +1233,34 @@
             planetSystem = new THREE.Points(planetGeo, planetMat);
             scene.add(planetSystem);
 
-            const ringCount = 8000;
-            const ringPos = new Float32Array(ringCount * 3);
-            const ringSizes = new Float32Array(ringCount);
-            const ringColors = new Float32Array(ringCount * 3);
+            var ringCount = 8000;
+            var ringPos = new Float32Array(ringCount * 3);
+            var ringSizes = new Float32Array(ringCount);
+            var ringColors = new Float32Array(ringCount * 3);
 
-            for (let i = 0; i < ringCount; i++) {
-                const radius = 4.5 + Math.random() * 4.5;
-                const angle = Math.random() * Math.PI * 2;
-                const thickness = 0.2 + Math.random() * 0.4;
-                const yOffset = (Math.random() - 0.5) * thickness;
-                ringPos[i * 3] = radius * Math.cos(angle);
-                ringPos[i * 3 + 1] = yOffset * 0.6;
-                ringPos[i * 3 + 2] = radius * Math.sin(angle);
-                ringSizes[i] = 0.15 + Math.random() * 0.3;
-                const color = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
-                const brightness = 0.4 + Math.random() * 0.6;
-                color.multiplyScalar(brightness);
-                ringColors[i * 3] = color.r;
-                ringColors[i * 3 + 1] = color.g;
-                ringColors[i * 3 + 2] = color.b;
+            for (var j = 0; j < ringCount; j++) {
+                var ringRadius = 4.5 + Math.random() * 4.5;
+                var ringAngle = Math.random() * Math.PI * 2;
+                var thickness = 0.2 + Math.random() * 0.4;
+                var yOffset = (Math.random() - 0.5) * thickness;
+                ringPos[j * 3] = ringRadius * Math.cos(ringAngle);
+                ringPos[j * 3 + 1] = yOffset * 0.6;
+                ringPos[j * 3 + 2] = ringRadius * Math.sin(ringAngle);
+                ringSizes[j] = 0.15 + Math.random() * 0.3;
+                var ringColor = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
+                var ringBrightness = 0.4 + Math.random() * 0.6;
+                ringColor.multiplyScalar(ringBrightness);
+                ringColors[j * 3] = ringColor.r;
+                ringColors[j * 3 + 1] = ringColor.g;
+                ringColors[j * 3 + 2] = ringColor.b;
             }
 
-            const ringGeo = new THREE.BufferGeometry();
+            var ringGeo = new THREE.BufferGeometry();
             ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPos, 3));
             ringGeo.setAttribute('size', new THREE.BufferAttribute(ringSizes, 1));
             ringGeo.setAttribute('color', new THREE.BufferAttribute(ringColors, 3));
 
-            const ringMat = new THREE.PointsMaterial({
+            var ringMat = new THREE.PointsMaterial({
                 size: 0.2,
                 map: texture,
                 blending: THREE.AdditiveBlending,
@@ -1261,36 +1274,36 @@
             ringSystem = new THREE.Points(ringGeo, ringMat);
             scene.add(ringSystem);
 
-            const starGeo = new THREE.BufferGeometry();
-            const starCount = 1500;
-            const starPos = new Float32Array(starCount * 3);
-            for (let i = 0; i < starCount; i++) {
-                const r = 30 + Math.random() * 40;
-                const theta = Math.random() * Math.PI * 2;
-                const phi = Math.acos(2 * Math.random() - 1);
-                starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-                starPos[i * 3 + 1] = r * Math.cos(phi);
-                starPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+            var starGeo = new THREE.BufferGeometry();
+            var starCount = 1500;
+            var starPos = new Float32Array(starCount * 3);
+            for (var k = 0; k < starCount; k++) {
+                var r = 30 + Math.random() * 40;
+                var theta2 = Math.random() * Math.PI * 2;
+                var phi2 = Math.acos(2 * Math.random() - 1);
+                starPos[k * 3] = r * Math.sin(phi2) * Math.cos(theta2);
+                starPos[k * 3 + 1] = r * Math.cos(phi2);
+                starPos[k * 3 + 2] = r * Math.sin(phi2) * Math.sin(theta2);
             }
             starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-            const starMat = new THREE.PointsMaterial({
+            var starMat = new THREE.PointsMaterial({
                 color: 0xffffff,
                 size: 0.08,
                 transparent: true,
                 opacity: 0.4,
                 sizeAttenuation: true,
             });
-            const stars = new THREE.Points(starGeo, starMat);
+            var stars = new THREE.Points(starGeo, starMat);
             scene.add(stars);
 
-            const light = new THREE.PointLight(0xe91e63, 0.5, 20);
+            var light = new THREE.PointLight(0xe91e63, 0.5, 20);
             light.position.set(0, 0, 0);
             scene.add(light);
 
-            const ambient = new THREE.AmbientLight(0x222244, 0.2);
+            var ambient = new THREE.AmbientLight(0x222244, 0.2);
             scene.add(ambient);
 
-            const light2 = new THREE.DirectionalLight(0xff80ab, 0.3);
+            var light2 = new THREE.DirectionalLight(0xff80ab, 0.3);
             light2.position.set(5, 5, 5);
             scene.add(light2);
 
@@ -1303,16 +1316,16 @@
         }
 
         function startCinematicIntro() {
-            let progress = 0;
-            const startPos = { x: 0, y: 2, z: 18 };
-            const endPos = { x: 0, y: 1.5, z: 10 };
+            var progress = 0;
+            var startPos = { x: 0, y: 2, z: 18 };
+            var endPos = { x: 0, y: 1.5, z: 10 };
 
             function animateCinematic() {
                 if (!galaxyReady) return;
                 progress += 0.008;
 
                 if (progress < 1) {
-                    const t = progress < 0.5 ?
+                    var t = progress < 0.5 ?
                         4 * progress * progress * progress :
                         1 - Math.pow(-2 * progress + 2, 3) / 2;
 
@@ -1320,7 +1333,7 @@
                     camera.position.y = startPos.y + (endPos.y - startPos.y) * t;
                     camera.position.z = startPos.z + (endPos.z - startPos.z) * t;
 
-                    const rotAngle = t * 0.25;
+                    var rotAngle = t * 0.25;
                     camera.position.x += Math.sin(rotAngle) * 1.5;
 
                     controls.target.set(0, 0, 0);
@@ -1350,9 +1363,9 @@
         }
 
         function onResize() {
-            const container = document.getElementById('galaxy');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
+            var container = document.getElementById('galaxy');
+            var width = container.clientWidth;
+            var height = container.clientHeight;
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);
@@ -1360,10 +1373,10 @@
 
         function checkZoomForFinalMessage() {
             if (!camera) return;
-            const distance = camera.position.distanceTo(controls.target);
+            var distance = camera.position.distanceTo(controls.target);
             if (distance < 3.5 && !finalMessageShown) {
                 finalMessageShown = true;
-                const finalMsg = document.getElementById('finalMessage');
+                var finalMsg = document.getElementById('finalMessage');
                 finalMsg.classList.add('show');
                 clearInterval(zoomCheckInterval);
             }
