@@ -6,9 +6,6 @@
     <title>Happy Birthday Rara Rindu Reski ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* =========================================================
-           RESET & BASE
-           ========================================================= */
         * {
             margin: 0;
             padding: 0;
@@ -24,9 +21,6 @@
             background: #fce4ec;
         }
 
-        /* =========================================================
-           LOADING SCREEN
-           ========================================================= */
         #loadingScreen {
             position: fixed;
             top: 0;
@@ -55,55 +49,19 @@
             text-shadow: 0 2px 20px rgba(233, 30, 99, 0.2);
         }
 
-        .loading-heart-container {
-            position: relative;
-            width: 120px;
-            height: 120px;
-        }
-
-        .loading-heart-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            font-size: 120px;
-            line-height: 120px;
-            text-align: center;
-            color: rgba(233, 30, 99, 0.15);
-            user-select: none;
-            pointer-events: none;
-        }
-
-        .loading-heart-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            transition: clip-path 0.3s ease;
-            clip-path: inset(100% 0 0 0);
-        }
-
-        .loading-heart-fill span {
-            font-size: 120px;
-            line-height: 120px;
-            text-align: center;
-            display: block;
+        .loading-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 700;
             color: #e91e63;
-            text-shadow: 0 0 40px rgba(233, 30, 99, 0.4);
-            user-select: none;
-            pointer-events: none;
+            text-shadow: 0 4px 40px rgba(233, 30, 99, 0.3);
+            line-height: 1;
+            margin-bottom: 10px;
         }
 
-        .loading-percent {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            font-weight: 600;
+        .loading-number .percent {
+            font-size: clamp(2rem, 4vw, 3rem);
             color: #ad1457;
-            margin-top: 20px;
-            letter-spacing: 2px;
         }
 
         .loading-text {
@@ -112,13 +70,28 @@
             color: #6a1b4d;
             margin-top: 8px;
             font-weight: 300;
-            letter-spacing: 1px;
+            letter-spacing: 3px;
             opacity: 0.7;
+            text-transform: uppercase;
         }
 
-        /* =========================================================
-           LAYER SYSTEM - semua layer dalam satu file
-           ========================================================= */
+        .loading-progress-bar {
+            width: 220px;
+            height: 4px;
+            background: rgba(233, 30, 99, 0.15);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #e91e63, #ad1457);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
         .layer {
             position: fixed;
             top: 0;
@@ -130,7 +103,7 @@
             align-items: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 1.2s ease, transform 1.2s ease;
+            transition: opacity 1.2s ease;
             z-index: 1;
         }
 
@@ -146,9 +119,6 @@
             z-index: 5;
         }
 
-        /* =========================================================
-           LANDING PAGE
-           ========================================================= */
         #landing {
             background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 40%, #f48fb1 100%);
             z-index: 100;
@@ -165,7 +135,6 @@
             pointer-events: auto;
         }
 
-        /* Floating elements container */
         .floating-container {
             position: absolute;
             top: 0;
@@ -203,7 +172,6 @@
             }
         }
 
-        /* Landing content */
         .landing-content {
             position: relative;
             z-index: 10;
@@ -290,26 +258,7 @@
             transform: scale(0.97);
         }
 
-        .btn-enter::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .btn-enter:hover::after {
-            opacity: 1;
-        }
-
-        /* =========================================================
-           ENVELOPE PAGE
-           ========================================================= */
-        #envelope {
+        #envelopePage {
             background: linear-gradient(135deg, #f8bbd0, #f48fb1, #f06292);
             z-index: 90;
             flex-direction: column;
@@ -318,7 +267,7 @@
             overflow: hidden;
         }
 
-        #envelope.active {
+        #envelopePage.active {
             opacity: 1;
             pointer-events: auto;
         }
@@ -340,7 +289,7 @@
             perspective: 900px;
         }
 
-        .envelope {
+        #envelopeCard {
             position: relative;
             width: 100%;
             height: 100%;
@@ -348,7 +297,7 @@
             transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .envelope.open {
+        #envelopeCard.open {
             transform: rotateX(-8deg) scale(0.95);
         }
 
@@ -380,7 +329,7 @@
             border-bottom: none;
         }
 
-        .envelope.open .envelope-flap {
+        #envelopeCard.open .envelope-flap {
             transform: rotateX(-180deg);
         }
 
@@ -397,7 +346,7 @@
             cursor: pointer;
         }
 
-        .envelope.open .envelope-heart {
+        #envelopeCard.open .envelope-heart {
             opacity: 0;
             transform: translate(-50%, -50%) scale(0);
             pointer-events: none;
@@ -440,7 +389,7 @@
             z-index: 2;
         }
 
-        .envelope.open .envelope-letter {
+        #envelopeCard.open .envelope-letter {
             opacity: 1;
             transform: translateX(-50%) translateY(-20px);
         }
@@ -482,9 +431,6 @@
             }
         }
 
-        /* =========================================================
-           LETTER PAGE (Surat penuh setelah amplop terbuka)
-           ========================================================= */
         #letterPage {
             background: linear-gradient(135deg, #fce4ec, #fff5f6, #f8bbd0);
             z-index: 85;
@@ -532,8 +478,8 @@
         }
 
         .letter-content {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, 1.5vw, 1.3rem);
             color: #4a1a2c;
             line-height: 2;
             white-space: pre-wrap;
@@ -591,9 +537,6 @@
             box-shadow: 0 12px 40px rgba(233, 30, 99, 0.4);
         }
 
-        /* =========================================================
-           GALLERY PAGE
-           ========================================================= */
         #gallery {
             background: linear-gradient(135deg, #fce4ec, #fff5f6, #f8bbd0);
             z-index: 70;
@@ -716,9 +659,6 @@
             box-shadow: 0 12px 40px rgba(233, 30, 99, 0.4);
         }
 
-        /* =========================================================
-           GALAXY PAGE - Planet Saturnus
-           ========================================================= */
         #galaxy {
             background: #0a0a0a;
             z-index: 60;
@@ -757,9 +697,19 @@
             animation: pulseText 3s ease-in-out infinite;
         }
 
-        /* =========================================================
-           FINAL MESSAGE - muncul di atas galaxy
-           ========================================================= */
+        .galaxy-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.3);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            letter-spacing: 3px;
+            z-index: 1;
+            animation: pulseText 1.5s ease-in-out infinite;
+        }
+
         .final-message {
             position: absolute;
             top: 50%;
@@ -801,58 +751,38 @@
             font-weight: 300;
         }
 
-        /* =========================================================
-           RESPONSIVE FIXES
-           ========================================================= */
         @media (max-width: 600px) {
             .landing-content {
                 padding: 30px 25px;
             }
-
             .envelope-container {
                 width: 220px;
                 height: 160px;
             }
-
             .envelope-heart {
                 font-size: 45px;
             }
-
             .letter-card {
                 padding: 30px 20px;
             }
-
             .gallery-grid {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                 gap: 12px;
             }
-
             .gallery-card img {
                 height: 150px;
             }
-
-            .gallery-card .card-info h4 {
-                font-size: 12px;
-            }
-
             .final-message h1 {
                 font-size: 1.8rem;
             }
             .final-message h2 {
                 font-size: 1.2rem;
             }
-
-            .loading-heart-container {
-                width: 80px;
-                height: 80px;
+            .loading-number {
+                font-size: 3.5rem;
             }
-            .loading-heart-bg {
-                font-size: 80px;
-                line-height: 80px;
-            }
-            .loading-heart-fill span {
-                font-size: 80px;
-                line-height: 80px;
+            .loading-progress-bar {
+                width: 150px;
             }
         }
 
@@ -874,89 +804,48 @@
             .gallery-card img {
                 height: 120px;
             }
-            .loading-heart-container {
-                width: 60px;
-                height: 60px;
+            .loading-number {
+                font-size: 2.8rem;
             }
-            .loading-heart-bg {
-                font-size: 60px;
-                line-height: 60px;
+            .loading-progress-bar {
+                width: 120px;
             }
-            .loading-heart-fill span {
-                font-size: 60px;
-                line-height: 60px;
-            }
-        }
-
-        /* =========================================================
-           UTILITY
-           ========================================================= */
-        .no-scrollbar::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
-        }
-
-        .galaxy-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(255, 255, 255, 0.3);
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            letter-spacing: 3px;
-            z-index: 1;
-            animation: pulseText 1.5s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================================
-    LOADING SCREEN
-    ========================================================== -->
     <div id="loadingScreen">
         <div class="loading-title">Loading Love ❤️</div>
-        <div class="loading-heart-container">
-            <div class="loading-heart-bg">❤️</div>
-            <div class="loading-heart-fill" id="heartFill">
-                <span>❤️</span>
-            </div>
+        <div class="loading-number" id="loadingNumber">0<span class="percent">%</span></div>
+        <div class="loading-text">Mempersiapkan kejutan untuk kesayangan bee 🤭</div>
+        <div class="loading-progress-bar">
+            <div class="fill" id="loadingFill"></div>
         </div>
-        <div class="loading-percent" id="loadingPercent">0%</div>
-        <div class="loading-text">Mempersiapkan kejutan untuk Rara...</div>
     </div>
 
-    <!-- ==========================================================
-    LANDING PAGE
-    ========================================================== -->
-    <div id="landing" class="layer">
+    <div id="landing" class="layer active">
         <div class="floating-container" id="floatingContainer"></div>
-
         <div class="landing-content">
             <div class="landing-title">Happy Birthday ❤️</div>
-            <div class="landing-name">Rara Rindu Reski</div>
+            <div class="landing-name">Sayangku Cintaku ❤️</div>
             <div class="landing-sub" id="typewriter"></div>
             <button class="btn-enter" id="btnEnter">Click To Enter Our World 💕</button>
         </div>
     </div>
 
-    <!-- ==========================================================
-    ENVELOPE PAGE
-    ========================================================== -->
-    <div id="envelope" class="layer">
+    <div id="envelopePage" class="layer">
         <div class="floating-container" id="envelopeFloating"></div>
-
         <div class="envelope-wrapper" id="envelopeWrapper">
             <div class="envelope-container">
-                <div class="envelope" id="envelope">
+                <div id="envelopeCard">
                     <div class="envelope-flap"></div>
                     <div class="envelope-body"></div>
                     <div class="envelope-heart" id="envelopeHeart">❤️</div>
                     <div class="envelope-letter">
                         <div class="envelope-letter-preview">
                             <span class="big">💌</span>
-                            Untuk Rara...
+                            Untuk Sayang 🤭
                         </div>
                     </div>
                 </div>
@@ -965,9 +854,6 @@
         </div>
     </div>
 
-    <!-- ==========================================================
-    LETTER PAGE (Surat lengkap)
-    ========================================================== -->
     <div id="letterPage" class="layer">
         <div class="letter-card" id="letterCard">
             <div class="letter-content" id="letterContent"></div>
@@ -975,9 +861,6 @@
         </div>
     </div>
 
-    <!-- ==========================================================
-    GALLERY PAGE
-    ========================================================== -->
     <div id="gallery" class="layer">
         <div class="gallery-container">
             <h2 class="gallery-title">Our Beautiful Moments Together ❤️</h2>
@@ -988,15 +871,10 @@
         </div>
     </div>
 
-    <!-- ==========================================================
-    GALAXY PAGE
-    ========================================================== -->
     <div id="galaxy" class="layer">
         <div class="galaxy-loading" id="galaxyLoading">Loading Galaxy...</div>
         <canvas id="galaxy-canvas"></canvas>
         <div class="galaxy-overlay">✨ Scroll to explore • Drag to rotate ✨</div>
-
-        <!-- Final Message -->
         <div class="final-message" id="finalMessage">
             <h1>Forever &amp; Always ❤️</h1>
             <h2>Happy 21st Birthday</h2>
@@ -1004,61 +882,43 @@
         </div>
     </div>
 
-    <!-- ==========================================================
-    AUDIO
-    ========================================================== -->
     <audio id="bgMusic" loop preload="auto">
         <source src="music/penjaga-hati.mp3" type="audio/mpeg">
     </audio>
 
-
-    <!-- ==========================================================
-    JAVASCRIPT - SEMUA LOGIC
-    ========================================================== -->
     <script>
-        // ==========================================================
-        // 0. LOADING SCREEN
-        // ==========================================================
         const loadingScreen = document.getElementById('loadingScreen');
-        const heartFill = document.getElementById('heartFill');
-        const loadingPercent = document.getElementById('loadingPercent');
+        const loadingNumber = document.getElementById('loadingNumber');
+        const loadingFill = document.getElementById('loadingFill');
 
         let loadProgress = 0;
 
         function simulateLoading() {
             const interval = setInterval(() => {
-                loadProgress += Math.random() * 8 + 2;
+                loadProgress += Math.random() * 6 + 3;
                 if (loadProgress >= 100) {
                     loadProgress = 100;
                     clearInterval(interval);
-                    // Hide loading screen
                     setTimeout(() => {
                         loadingScreen.classList.add('hide');
                         setTimeout(() => {
                             loadingScreen.style.display = 'none';
-                            // Start typewriter after loading
                             startTypewriter();
                         }, 1500);
                     }, 400);
                 }
                 updateLoading(loadProgress);
-            }, 200);
+            }, 150);
         }
 
         function updateLoading(progress) {
             const percent = Math.min(100, Math.round(progress));
-            loadingPercent.textContent = percent + '%';
-            // Clip path: 100% - progress
-            const clip = (100 - percent) + '% 0 0 0';
-            heartFill.style.clipPath = 'inset(' + clip + ')';
+            loadingNumber.innerHTML = percent + '<span class="percent">%</span>';
+            loadingFill.style.width = percent + '%';
         }
 
-        // Start loading
         simulateLoading();
 
-        // ==========================================================
-        // 1. FLOATING ELEMENTS (Landing & Envelope)
-        // ==========================================================
         const floatingEmojis = ['❤️', '🌸', '✨', '🦋', '💖'];
 
         function createFloatingElements(containerId, count = 25) {
@@ -1080,9 +940,6 @@
         createFloatingElements('floatingContainer', 30);
         createFloatingElements('envelopeFloating', 20);
 
-        // ==========================================================
-        // 2. TYPEWRITER EFFECT (Landing)
-        // ==========================================================
         const typewriterText =
             `Today is not just a birthday...\nToday is the day the world\nwas blessed with someone\nincredibly special ❤️`;
 
@@ -1115,47 +972,32 @@
             type();
         }
 
-        // ==========================================================
-        // 3. MUSIC
-        // ==========================================================
         const audio = document.getElementById('bgMusic');
         let musicStarted = false;
 
         function startMusic() {
             if (!musicStarted) {
-                audio.play().catch(() => {
-                    // Auto-play blocked, user will click again
-                });
+                audio.play().catch(() => {});
                 musicStarted = true;
             }
         }
 
-        // ==========================================================
-        // 4. LANDING → ENVELOPE
-        // ==========================================================
         const landing = document.getElementById('landing');
-        const envelope = document.getElementById('envelope');
+        const envelopePage = document.getElementById('envelopePage');
         const btnEnter = document.getElementById('btnEnter');
 
         btnEnter.addEventListener('click', function() {
             startMusic();
-
-            // Fade out landing
             landing.classList.remove('active');
             landing.classList.add('fade-out');
-
-            // After fade, show envelope
             setTimeout(() => {
                 landing.style.display = 'none';
-                envelope.classList.add('active');
+                envelopePage.classList.add('active');
             }, 1200);
         });
 
-        // ==========================================================
-        // 5. ENVELOPE → LETTER (klik heart, amplop terbuka)
-        // ==========================================================
         const envelopeWrapper = document.getElementById('envelopeWrapper');
-        const envelopeEl = document.getElementById('envelope');
+        const envelopeCard = document.getElementById('envelopeCard');
         const envelopeHeart = document.getElementById('envelopeHeart');
         const envelopeHint = document.getElementById('envelopeHint');
         const letterPage = document.getElementById('letterPage');
@@ -1165,64 +1007,35 @@
         let envelopeOpened = false;
         let letterTypingDone = false;
 
-        // Teks surat yang benar (rapi)
         const letterText =
-            `Happy Birthday sayangku, cintaku, Rara Rindu Reski ❤️
+            `happy birthday sayangku cintaku yg santik dan sumel 🤭🤭🤭🤭🤭🤭🤭🤭😚😚😚❤️❤️❤️❤️❤️, panjang umur dan sehat selalu turus ya sayang 🤭🤭🤭🤭🤭😚😚❤️❤️❤️, semoga apa yang sayang harapkan akan secepatnya terwujud, semoga semua yang sayang cita" kan akan terwujud, amiinn....., selamat ke yg 21 tahun sayang 🤭🤭 tidak kerasa sudah makin dewasa dan zuga tambah hot oh oh oh haaa mantap 🤭🤭🤭🤭🤭, tetap jadi pribadi yg baik seperti ini terus ya sayang, dan zuga kurang kurangi kumel kumel nya, jangan banyak memarah, kurang kurangi makanan manis manisan karna yg bulehnya maam kuntol sahaja ahhahahahayyy ukay ukay acc 🤭🤭🤭🤭, semangat terus dan semoga rezeki sayang lancar trus mau dari segi apapun itu 🤭🤭, masiyu ya sayang sudah bertahan sejauh ini dan masih menerima bee kembali untuk bersama" menjalani hubungan ini, masiyu untuk semuanya bee senang sekali bisa bertemu dengan sayang, masiyu untuk semuanya ya sayang ☹️☹️☹️🤭🤭🤭😚😚❤️❤️❤️, sekali lagi samat ulang tahun cinta nya bee 🤭🤭🤭🤭🤭🤭😚😚😚😚😚😚❤️❤️❤️❤️❤️`;
 
-        Hari ini adalah hari yang paling istimewa di dunia,
-        karena di hari inilah seseorang yang paling sempurna
-        lahir ke dunia.
-
-        Aku bersyukur setiap hari karena Tuhan mengizinkan
-        aku bertemu denganmu. Kamu adalah hadiah terindah
-        yang pernah aku terima.
-
-        Di usiamu yang ke-21 ini, aku berdoa agar semua
-        kebaikan selalu menyertaimu. Semoga semua impianmu
-        terwujud. Semoga kebahagiaan selalu bersamamu.
-
-        Dan yang terpenting...
-        Semoga aku selalu menjadi bagian dari hidupmu.
-
-        Samat ulang tahun cinta nya bee ❤️
-
-        Dari seseorang yang selalu menyayangimu,
-        Bee`;
-
-        // Click heart to open envelope
         envelopeHeart.addEventListener('click', function(e) {
             e.stopPropagation();
             if (envelopeOpened) return;
             envelopeOpened = true;
 
-            // Open envelope
-            envelopeEl.classList.add('open');
+            envelopeCard.classList.add('open');
             envelopeHint.textContent = '💌 Surat terbuka...';
 
-            // After envelope opens, show letter page
             setTimeout(() => {
-                // Fade envelope
-                envelope.classList.remove('active');
-                envelope.classList.add('fade-out');
+                envelopePage.classList.remove('active');
+                envelopePage.classList.add('fade-out');
 
                 setTimeout(() => {
-                    envelope.style.display = 'none';
+                    envelopePage.style.display = 'none';
                     letterPage.classList.add('active');
                     startLetterTypewriter();
                 }, 1200);
             }, 1800);
         });
 
-        // Also click on wrapper as fallback
         envelopeWrapper.addEventListener('click', function(e) {
             if (e.target === envelopeHeart) return;
             if (envelopeOpened) return;
             envelopeHeart.click();
         });
 
-        // ==========================================================
-        // 6. LETTER TYPEWRITER
-        // ==========================================================
         function startLetterTypewriter() {
             let index = 0;
             letterContent.innerHTML = '';
@@ -1247,18 +1060,12 @@
             setTimeout(typeLetter, 600);
         }
 
-        // ==========================================================
-        // 7. LETTER → GALLERY
-        // ==========================================================
         const galleryPage = document.getElementById('gallery');
 
         btnNext.addEventListener('click', function() {
             if (!letterTypingDone) return;
-
-            // Fade letter
             letterPage.classList.remove('active');
             letterPage.classList.add('fade-out');
-
             setTimeout(() => {
                 letterPage.style.display = 'none';
                 galleryPage.classList.add('active');
@@ -1266,9 +1073,6 @@
             }, 1200);
         });
 
-        // ==========================================================
-        // 8. GALLERY
-        // ==========================================================
         const galleryData = [
             { img: 'foto/1.jpeg', title: 'First Meet', desc: 'Awal dari segalanya ❤️' },
             { img: 'foto/2.jpg', title: 'Beautiful Smile', desc: 'Senyum yang selalu kurindukan' },
@@ -1282,10 +1086,8 @@
         function initGallery() {
             if (galleryInitialized) return;
             galleryInitialized = true;
-
             const grid = document.getElementById('galleryGrid');
             grid.innerHTML = '';
-
             galleryData.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'gallery-card';
@@ -1297,24 +1099,18 @@
                     </div>
                 `;
                 grid.appendChild(card);
-
                 setTimeout(() => {
                     card.classList.add('visible');
                 }, 200 + index * 180);
             });
         }
 
-        // ==========================================================
-        // 9. GALLERY → GALAXY
-        // ==========================================================
         const galaxyPage = document.getElementById('galaxy');
         const btnGalaxy = document.getElementById('btnGalaxy');
 
         btnGalaxy.addEventListener('click', function() {
-            // Fade gallery
             galleryPage.classList.remove('active');
             galleryPage.classList.add('fade-out');
-
             setTimeout(() => {
                 galleryPage.style.display = 'none';
                 galaxyPage.classList.add('active');
@@ -1322,31 +1118,26 @@
             }, 1200);
         });
 
-        // ==========================================================
-        // 10. THREE.JS GALAXY - PLANET SATURNUS DENGAN CINCIN
-        // ==========================================================
         let galaxyInitialized = false;
         let scene, camera, renderer, controls;
-        let particleSystem;
-        let ringSystem;
+        let planetSystem, ringSystem;
         let animationId;
         let finalMessageShown = false;
         let zoomCheckInterval = null;
+        let galaxyReady = false;
 
         function initGalaxy() {
             if (galaxyInitialized) return;
             galaxyInitialized = true;
-
             const loading = document.getElementById('galaxyLoading');
             loading.style.display = 'block';
 
-            // Load Three.js from CDN
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
             script.onload = function() {
                 const controlsScript = document.createElement('script');
                 controlsScript.src =
-                'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
+                    'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
                 controlsScript.onload = function() {
                     loading.style.display = 'none';
                     setupGalaxyScene();
@@ -1362,19 +1153,44 @@
             document.head.appendChild(script);
         }
 
+        function createTextTexture(text) {
+            const canvas = document.createElement('canvas');
+            const size = 256;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, size, size);
+            const fontSize = 34;
+            ctx.font = `bold ${fontSize}px 'Arial', sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'rgba(233, 30, 99, 0.8)';
+            ctx.shadowBlur = 25;
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#ff80ab');
+            gradient.addColorStop(0.5, '#e91e63');
+            gradient.addColorStop(1, '#ad1457');
+            ctx.fillStyle = gradient;
+            ctx.fillText(text, size / 2, size / 2);
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#fff';
+            ctx.globalAlpha = 0.1;
+            ctx.fillText(text, size / 2 + 1, size / 2 + 1);
+            ctx.globalAlpha = 1;
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.needsUpdate = true;
+            return texture;
+        }
+
         function setupGalaxyScene() {
             const canvas = document.getElementById('galaxy-canvas');
             const container = document.getElementById('galaxy');
 
-            // Scene
             scene = new THREE.Scene();
-
-            // Camera
             const aspect = container.clientWidth / container.clientHeight;
-            camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
-            camera.position.set(0, 4, 20);
+            camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+            camera.position.set(0, 2, 18);
 
-            // Renderer
             renderer = new THREE.WebGLRenderer({
                 canvas: canvas,
                 alpha: false,
@@ -1384,28 +1200,23 @@
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.setClearColor(0x0a0a0a, 1);
 
-            // Controls
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
             controls.rotateSpeed = 0.6;
             controls.zoomSpeed = 1.0;
-            controls.minDistance = 2.5;
-            controls.maxDistance = 45;
+            controls.minDistance = 3;
+            controls.maxDistance = 30;
             controls.target.set(0, 0, 0);
+            controls.enabled = false;
             controls.update();
 
-            // --- BUAT TEXTURE "Bee ❤️ Rara" ---
-            const texture = createTextTexture();
+            const texture = createTextTexture('Bee ❤️ sayang');
 
-            // ==========================================================
-            // PART 1: BOLA PLANET (BULAT DENGAN TEKS)
-            // ==========================================================
-            const planetParticleCount = 4000;
-            const planetPositions = new Float32Array(planetParticleCount * 3);
-            const planetSizes = new Float32Array(planetParticleCount);
-            const planetColors = new Float32Array(planetParticleCount * 3);
-            const planetRandoms = new Float32Array(planetParticleCount);
+            const planetCount = 5000;
+            const planetPos = new Float32Array(planetCount * 3);
+            const planetSizes = new Float32Array(planetCount);
+            const planetColors = new Float32Array(planetCount * 3);
 
             const colorPalette = [
                 new THREE.Color('#ff80ab'),
@@ -1415,87 +1226,60 @@
                 new THREE.Color('#f48fb1'),
                 new THREE.Color('#d81b60'),
                 new THREE.Color('#ff4081'),
+                new THREE.Color('#c2185b'),
             ];
 
-            // Buat bola dengan distribusi sphere
-            for (let i = 0; i < planetParticleCount; i++) {
-                // Radius planet: 2.5 - 4.5 (bervariasi untuk tekstur)
+            for (let i = 0; i < planetCount; i++) {
                 const radius = 2.5 + Math.random() * 2.0;
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos(2 * Math.random() - 1);
-
-                const x = radius * Math.sin(phi) * Math.cos(theta);
-                const y = radius * Math.cos(phi);
-                const z = radius * Math.sin(phi) * Math.sin(theta);
-
-                planetPositions[i * 3] = x;
-                planetPositions[i * 3 + 1] = y;
-                planetPositions[i * 3 + 2] = z;
-
-                // Size: bervariasi
+                planetPos[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                planetPos[i * 3 + 1] = radius * Math.cos(phi);
+                planetPos[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
                 planetSizes[i] = 0.2 + Math.random() * 0.5;
-
-                // Warna: pink dengan variasi
                 const color = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
                 const brightness = 0.7 + Math.random() * 0.3;
                 color.multiplyScalar(brightness);
                 planetColors[i * 3] = color.r;
                 planetColors[i * 3 + 1] = color.g;
                 planetColors[i * 3 + 2] = color.b;
-
-                planetRandoms[i] = Math.random() * Math.PI * 2;
             }
 
             const planetGeo = new THREE.BufferGeometry();
-            planetGeo.setAttribute('position', new THREE.BufferAttribute(planetPositions, 3));
+            planetGeo.setAttribute('position', new THREE.BufferAttribute(planetPos, 3));
             planetGeo.setAttribute('size', new THREE.BufferAttribute(planetSizes, 1));
             planetGeo.setAttribute('color', new THREE.BufferAttribute(planetColors, 3));
 
             const planetMat = new THREE.PointsMaterial({
-                size: 0.3,
+                size: 0.35,
                 map: texture,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
                 transparent: true,
                 vertexColors: true,
-                opacity: 0.9,
+                opacity: 0.92,
                 sizeAttenuation: true,
             });
 
-            particleSystem = new THREE.Points(planetGeo, planetMat);
-            scene.add(particleSystem);
+            planetSystem = new THREE.Points(planetGeo, planetMat);
+            scene.add(planetSystem);
 
-            // ==========================================================
-            // PART 2: CINCIN SATURNUS
-            // ==========================================================
-            const ringCount = 5000;
-            const ringPositions = new Float32Array(ringCount * 3);
+            const ringCount = 8000;
+            const ringPos = new Float32Array(ringCount * 3);
             const ringSizes = new Float32Array(ringCount);
             const ringColors = new Float32Array(ringCount * 3);
 
             for (let i = 0; i < ringCount; i++) {
-                // Radius cincin: 5.5 - 9.5
-                const radius = 5.5 + Math.random() * 4.0;
+                const radius = 4.5 + Math.random() * 4.5;
                 const angle = Math.random() * Math.PI * 2;
-
-                // Ketebalan cincin tipis
-                const thickness = 0.3 + Math.random() * 0.5;
+                const thickness = 0.2 + Math.random() * 0.4;
                 const yOffset = (Math.random() - 0.5) * thickness;
-
-                const x = radius * Math.cos(angle);
-                const z = radius * Math.sin(angle);
-                const y = yOffset * 0.8;
-
-                ringPositions[i * 3] = x;
-                ringPositions[i * 3 + 1] = y;
-                ringPositions[i * 3 + 2] = z;
-
-                // Size ring: lebih kecil
-                ringSizes[i] = 0.15 + Math.random() * 0.35;
-
-                // Warna ring: pink lebih terang
+                ringPos[i * 3] = radius * Math.cos(angle);
+                ringPos[i * 3 + 1] = yOffset * 0.6;
+                ringPos[i * 3 + 2] = radius * Math.sin(angle);
+                ringSizes[i] = 0.15 + Math.random() * 0.3;
                 const color = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
-                const brightness = 0.5 + Math.random() * 0.5;
+                const brightness = 0.4 + Math.random() * 0.6;
                 color.multiplyScalar(brightness);
                 ringColors[i * 3] = color.r;
                 ringColors[i * 3 + 1] = color.g;
@@ -1503,7 +1287,7 @@
             }
 
             const ringGeo = new THREE.BufferGeometry();
-            ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPositions, 3));
+            ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPos, 3));
             ringGeo.setAttribute('size', new THREE.BufferAttribute(ringSizes, 1));
             ringGeo.setAttribute('color', new THREE.BufferAttribute(ringColors, 3));
 
@@ -1514,18 +1298,15 @@
                 depthWrite: false,
                 transparent: true,
                 vertexColors: true,
-                opacity: 0.6,
+                opacity: 0.7,
                 sizeAttenuation: true,
             });
 
             ringSystem = new THREE.Points(ringGeo, ringMat);
             scene.add(ringSystem);
 
-            // ==========================================================
-            // PART 3: BINTANG LATAR BELAKANG
-            // ==========================================================
             const starGeo = new THREE.BufferGeometry();
-            const starCount = 1000;
+            const starCount = 1500;
             const starPos = new Float32Array(starCount * 3);
             for (let i = 0; i < starCount; i++) {
                 const r = 30 + Math.random() * 40;
@@ -1538,83 +1319,71 @@
             starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
             const starMat = new THREE.PointsMaterial({
                 color: 0xffffff,
-                size: 0.06,
+                size: 0.08,
                 transparent: true,
-                opacity: 0.5,
+                opacity: 0.4,
                 sizeAttenuation: true,
             });
             const stars = new THREE.Points(starGeo, starMat);
             scene.add(stars);
 
-            // ==========================================================
-            // PART 4: LIGHTING
-            // ==========================================================
-            const light = new THREE.PointLight(0xe91e63, 0.5, 30);
+            const light = new THREE.PointLight(0xe91e63, 0.5, 20);
             light.position.set(0, 0, 0);
             scene.add(light);
 
             const ambient = new THREE.AmbientLight(0x222244, 0.2);
             scene.add(ambient);
 
-            // Tambahan light dari samping
             const light2 = new THREE.DirectionalLight(0xff80ab, 0.3);
             light2.position.set(5, 5, 5);
             scene.add(light2);
 
-            // ==========================================================
-            // PART 5: RESIZE & ANIMATION
-            // ==========================================================
+            galaxyReady = true;
+            startCinematicIntro();
+
             window.addEventListener('resize', onResize);
-
-            // Start animation
             animateGalaxy();
-
-            // Check zoom for final message
             zoomCheckInterval = setInterval(checkZoomForFinalMessage, 500);
         }
 
-        function createTextTexture() {
-            const canvas = document.createElement('canvas');
-            const size = 256;
-            canvas.width = size;
-            canvas.height = size;
-            const ctx = canvas.getContext('2d');
+        function startCinematicIntro() {
+            let progress = 0;
+            const startPos = { x: 0, y: 2, z: 18 };
+            const endPos = { x: 0, y: 1.5, z: 10 };
 
-            ctx.clearRect(0, 0, size, size);
+            function animateCinematic() {
+                if (!galaxyReady) return;
+                progress += 0.008;
 
-            const text = 'Bee ❤️ Rara';
-            const fontSize = 32;
-            ctx.font = `bold ${fontSize}px 'Arial', sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
+                if (progress < 1) {
+                    const t = progress < 0.5 ?
+                        4 * progress * progress * progress :
+                        1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-            ctx.shadowColor = 'rgba(233, 30, 99, 0.6)';
-            ctx.shadowBlur = 20;
+                    camera.position.x = startPos.x + (endPos.x - startPos.x) * t;
+                    camera.position.y = startPos.y + (endPos.y - startPos.y) * t;
+                    camera.position.z = startPos.z + (endPos.z - startPos.z) * t;
 
-            const gradient = ctx.createLinearGradient(0, 0, size, size);
-            gradient.addColorStop(0, '#ff80ab');
-            gradient.addColorStop(0.5, '#e91e63');
-            gradient.addColorStop(1, '#ad1457');
-            ctx.fillStyle = gradient;
-            ctx.fillText(text, size / 2, size / 2);
+                    const rotAngle = t * 0.25;
+                    camera.position.x += Math.sin(rotAngle) * 1.5;
 
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = '#fff';
-            ctx.globalAlpha = 0.1;
-            ctx.fillText(text, size / 2 + 1, size / 2 + 1);
-            ctx.globalAlpha = 1;
+                    controls.target.set(0, 0, 0);
+                    controls.update();
 
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.needsUpdate = true;
-            return texture;
+                    requestAnimationFrame(animateCinematic);
+                } else {
+                    controls.enabled = true;
+                }
+            }
+
+            setTimeout(animateCinematic, 500);
         }
 
         function animateGalaxy() {
             animationId = requestAnimationFrame(animateGalaxy);
 
-            // Rotasi planet dan cincin
-            if (particleSystem) {
-                particleSystem.rotation.y += 0.002;
+            if (planetSystem) {
+                planetSystem.rotation.y += 0.002;
             }
             if (ringSystem) {
                 ringSystem.rotation.y += 0.003;
@@ -1636,7 +1405,7 @@
         function checkZoomForFinalMessage() {
             if (!camera) return;
             const distance = camera.position.distanceTo(controls.target);
-            if (distance < 4.5 && !finalMessageShown) {
+            if (distance < 3.5 && !finalMessageShown) {
                 finalMessageShown = true;
                 const finalMsg = document.getElementById('finalMessage');
                 finalMsg.classList.add('show');
@@ -1644,25 +1413,18 @@
             }
         }
 
-        // Clean up
         window.addEventListener('beforeunload', function() {
             if (animationId) cancelAnimationFrame(animationId);
             if (zoomCheckInterval) clearInterval(zoomCheckInterval);
             if (renderer) renderer.dispose();
         });
 
-        // ==========================================================
-        // 11. KEYBOARD SHORTCUT
-        // ==========================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && landing.classList.contains('active')) {
                 btnEnter.click();
             }
         });
 
-        // ==========================================================
-        // 12. PREVENT TOUCH
-        // ==========================================================
         document.getElementById('galaxy-canvas').addEventListener('touchstart', function(e) {
             if (e.target === this) e.preventDefault();
         }, { passive: false });
