@@ -1,161 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Happy Birthday Rara ❤️</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    overflow:hidden;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#f8f3eb;
-    font-family:Arial, sans-serif;
-}
-
-.container{
-    text-align:center;
-    z-index:10;
-}
-
-h1{
-    font-size:4rem;
-    color:#ff69b4;
-    margin-bottom:20px;
-}
-
-#typewriter{
-    font-size:1.5rem;
-    color:#7c3aed;
-    margin-bottom:40px;
-}
-
-.enter-btn{
-    border:none;
-    padding:18px 40px;
-    border-radius:50px;
-    background:#ff80bf;
-    color:white;
-    font-size:1.2rem;
-    cursor:pointer;
-    transition:.3s;
-    box-shadow:0 0 20px rgba(255,105,180,.5);
-}
-
-.enter-btn:hover{
-    transform:scale(1.08);
-}
-
-.floating{
-    position:absolute;
-    bottom:-100px;
-    font-size:30px;
-    animation:floatUp linear infinite;
-    opacity:.8;
-}
-
-@keyframes floatUp{
-    from{
-        transform:translateY(0);
-    }
-    to{
-        transform:translateY(-120vh);
-    }
-}
-
-.fade-out{
-    animation:fadeOut 1s forwards;
-}
-
-@keyframes fadeOut{
-    to{
-        opacity:0;
-        visibility:hidden;
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
+    <div class="cursor"></div>
+    <div class="container">
+        <h1>Happy Birthday Kesayangan Bee ❤️</h1>
+        <div class="greeting"></div>
+        <button class="cta-button">klick me 💕</button>
+    </div>
 
-<div id="landing" class="container">
-
-    <h1>Happy Birthday Rara ❤️</h1>
-
-    <div id="typewriter"></div>
-
-    <button class="enter-btn" onclick="enterWorld()">
-        Click To Enter Our World 💕
-    </button>
-
-</div>
-
-<script>
-
-const text =
-"Hey You Know What! You're the most adorable human I've ever met ❤️";
-
-let i = 0;
-
-function typing(){
-    if(i < text.length){
-        document.getElementById("typewriter").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typing,50);
-    }
-}
-
-typing();
-
-const icons = ["❤️","🌸","⭐","💖","✨","💕"];
-
-function createFloating(){
-
-    const item = document.createElement("div");
-
-    item.classList.add("floating");
-
-    item.innerHTML =
-        icons[Math.floor(Math.random()*icons.length)];
-
-    item.style.left =
-        Math.random()*100 + "vw";
-
-    item.style.animationDuration =
-        (8 + Math.random()*8) + "s";
-
-    document.body.appendChild(item);
-
-    setTimeout(()=>{
-        item.remove();
-    },16000);
-}
-
-setInterval(createFloating,400);
-
-function enterWorld(){
-
-    document.getElementById("landing")
-    .classList.add("fade-out");
-
-    setTimeout(()=>{
-        alert("Layer 1 nanti kita buat setelah ini ❤️");
-    },1000);
-
-}
-
-</script>
-
+    <script src="script.js">
+        
+    </script>
 </body>
 </html>
