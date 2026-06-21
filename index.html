@@ -697,6 +697,24 @@
             font-weight: 300;
         }
 
+        #musicToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(233, 30, 99, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
         @media (max-width: 600px) {
             .landing-content {
                 padding: 30px 25px;
@@ -822,11 +840,11 @@
         </div>
     </div>
 
-    <audio id="bgMusic" loop preload="auto">
-        <source src="./music/penjaga-hati.mp3" type="audio/mpeg">
+    <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
-    <button id="musicToggle" style="position:fixed;top:20px;right:20px;z-index:9999;background:rgba(233,30,99,0.8);border:none;border-radius:50%;width:50px;height:50px;font-size:24px;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(233,30,99,0.4);backdrop-filter:blur(10px);transition:all 0.3s;">🔇</button>
+    <button id="musicToggle">🔇</button>
 
     <script>
         var loadingScreen = document.getElementById('loadingScreen');
@@ -846,6 +864,7 @@
                         setTimeout(function() {
                             loadingScreen.style.display = 'none';
                             startTypewriter();
+                            startMusic();
                         }, 1500);
                     }, 400);
                 }
@@ -920,7 +939,8 @@
         audio.volume = 0.5;
         audio.loop = true;
 
-        function playMusic() {
+        function startMusic() {
+            if (musicStarted) return;
             audio.play().then(function() {
                 musicStarted = true;
                 musicToggle.textContent = '🔊';
@@ -929,13 +949,29 @@
             }).catch(function(err) {
                 console.log('❌ Gagal play:', err);
                 musicToggle.textContent = '🔇';
+                // Coba lagi setelah user klik
+                document.addEventListener('click', function firstClick() {
+                    if (!musicStarted) {
+                        audio.play().then(function() {
+                            musicStarted = true;
+                            musicToggle.textContent = '🔊';
+                            musicToggle.style.background = 'rgba(233,30,99,0.8)';
+                            console.log('🎵 Musik menyala (klik)!');
+                        }).catch(function() {});
+                    }
+                    document.removeEventListener('click', firstClick);
+                }, { once: true });
             });
         }
 
         musicToggle.addEventListener('click', function(e) {
             e.stopPropagation();
             if (audio.paused) {
-                playMusic();
+                audio.play().then(function() {
+                    musicStarted = true;
+                    this.textContent = '🔊';
+                    this.style.background = 'rgba(233,30,99,0.8)';
+                }.bind(this)).catch(function() {});
             } else {
                 audio.pause();
                 musicStarted = false;
@@ -944,22 +980,13 @@
             }
         });
 
-        setTimeout(playMusic, 1000);
-
-        document.addEventListener('click', function firstClick() {
-            if (!musicStarted) {
-                playMusic();
-            }
-            document.removeEventListener('click', firstClick);
-        }, { once: true });
-
         var landing = document.getElementById('landing');
         var envelopePage = document.getElementById('envelopePage');
         var btnEnter = document.getElementById('btnEnter');
 
         btnEnter.addEventListener('click', function() {
             if (!musicStarted) {
-                playMusic();
+                startMusic();
             }
             landing.classList.remove('active');
             landing.classList.add('fade-out');
