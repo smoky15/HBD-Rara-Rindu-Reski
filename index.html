@@ -25,6 +25,98 @@
         }
 
         /* =========================================================
+           LOADING SCREEN
+           ========================================================= */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 40%, #f48fb1 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1.5s ease;
+        }
+
+        #loadingScreen.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: #880e4f;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 20px rgba(233, 30, 99, 0.2);
+        }
+
+        .loading-heart-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .loading-heart-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 120px;
+            line-height: 120px;
+            text-align: center;
+            color: rgba(233, 30, 99, 0.15);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .loading-heart-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            transition: clip-path 0.3s ease;
+            clip-path: inset(100% 0 0 0);
+        }
+
+        .loading-heart-fill span {
+            font-size: 120px;
+            line-height: 120px;
+            text-align: center;
+            display: block;
+            color: #e91e63;
+            text-shadow: 0 0 40px rgba(233, 30, 99, 0.4);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .loading-percent {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #ad1457;
+            margin-top: 20px;
+            letter-spacing: 2px;
+        }
+
+        .loading-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            color: #6a1b4d;
+            margin-top: 8px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+
+        /* =========================================================
            LAYER SYSTEM - semua layer dalam satu file
            ========================================================= */
         .layer {
@@ -223,6 +315,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
         #envelope.active {
@@ -237,13 +330,14 @@
             justify-content: center;
             cursor: pointer;
             position: relative;
+            z-index: 5;
         }
 
         .envelope-container {
             position: relative;
-            width: 280px;
-            height: 200px;
-            perspective: 800px;
+            width: 300px;
+            height: 220px;
+            perspective: 900px;
         }
 
         .envelope {
@@ -255,7 +349,7 @@
         }
 
         .envelope.open {
-            transform: rotateX(-10deg) scale(0.95);
+            transform: rotateX(-8deg) scale(0.95);
         }
 
         .envelope-body {
@@ -263,9 +357,9 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 70%;
+            height: 72%;
             background: linear-gradient(145deg, #fce4ec, #f8bbd0);
-            border-radius: 0 0 15px 15px;
+            border-radius: 0 0 18px 18px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
             border: 2px solid rgba(233, 30, 99, 0.2);
         }
@@ -278,7 +372,7 @@
             height: 55%;
             background: linear-gradient(145deg, #f8bbd0, #f06292);
             clip-path: polygon(0 0, 50% 80%, 100% 0);
-            border-radius: 15px 15px 0 0;
+            border-radius: 18px 18px 0 0;
             transform-origin: top center;
             transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
@@ -295,16 +389,18 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 60px;
+            font-size: 65px;
             animation: heartbeat 1.5s ease-in-out infinite;
             z-index: 5;
             filter: drop-shadow(0 4px 20px rgba(233, 30, 99, 0.3));
             transition: all 0.5s;
+            cursor: pointer;
         }
 
         .envelope.open .envelope-heart {
             opacity: 0;
             transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
         }
 
         @keyframes heartbeat {
@@ -331,12 +427,12 @@
             bottom: 15%;
             left: 50%;
             transform: translateX(-50%) translateY(100%);
-            width: 85%;
-            height: 55%;
+            width: 88%;
+            height: 58%;
             background: #fffdf7;
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+            padding: 18px 16px;
             opacity: 0;
             transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             border: 1px solid rgba(233, 30, 99, 0.1);
@@ -351,15 +447,15 @@
 
         .envelope-letter-preview {
             font-family: 'Dancing Script', cursive;
-            font-size: 14px;
+            font-size: 13px;
             color: #6a1b4d;
             text-align: center;
             line-height: 1.6;
-            opacity: 0.6;
+            opacity: 0.7;
         }
 
         .envelope-letter-preview .big {
-            font-size: 24px;
+            font-size: 26px;
             display: block;
             margin-bottom: 5px;
         }
@@ -372,6 +468,8 @@
             font-weight: 300;
             letter-spacing: 2px;
             animation: pulseText 2s ease-in-out infinite;
+            z-index: 5;
+            position: relative;
         }
 
         @keyframes pulseText {
@@ -385,25 +483,25 @@
         }
 
         /* =========================================================
-           LETTER PAGE
+           LETTER PAGE (Surat penuh setelah amplop terbuka)
            ========================================================= */
-        #letter {
+        #letterPage {
             background: linear-gradient(135deg, #fce4ec, #fff5f6, #f8bbd0);
-            z-index: 80;
+            z-index: 85;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
 
-        #letter.active {
+        #letterPage.active {
             opacity: 1;
             pointer-events: auto;
         }
 
         .letter-card {
             background: #fffdf7;
-            max-width: 580px;
+            max-width: 620px;
             width: 95%;
             max-height: 80vh;
             padding: 45px 40px;
@@ -417,7 +515,7 @@
             transition: all 1s ease;
         }
 
-        #letter.active .letter-card {
+        #letterPage.active .letter-card {
             transform: translateY(0);
             opacity: 1;
         }
@@ -619,7 +717,7 @@
         }
 
         /* =========================================================
-           GALAXY PAGE
+           GALAXY PAGE - Planet Saturnus
            ========================================================= */
         #galaxy {
             background: #0a0a0a;
@@ -712,12 +810,12 @@
             }
 
             .envelope-container {
-                width: 200px;
-                height: 145px;
+                width: 220px;
+                height: 160px;
             }
 
             .envelope-heart {
-                font-size: 40px;
+                font-size: 45px;
             }
 
             .letter-card {
@@ -743,15 +841,28 @@
             .final-message h2 {
                 font-size: 1.2rem;
             }
+
+            .loading-heart-container {
+                width: 80px;
+                height: 80px;
+            }
+            .loading-heart-bg {
+                font-size: 80px;
+                line-height: 80px;
+            }
+            .loading-heart-fill span {
+                font-size: 80px;
+                line-height: 80px;
+            }
         }
 
         @media (max-width: 400px) {
             .envelope-container {
-                width: 160px;
-                height: 115px;
+                width: 170px;
+                height: 125px;
             }
             .envelope-heart {
-                font-size: 30px;
+                font-size: 35px;
             }
             .letter-content {
                 font-size: 1rem;
@@ -763,17 +874,28 @@
             .gallery-card img {
                 height: 120px;
             }
+            .loading-heart-container {
+                width: 60px;
+                height: 60px;
+            }
+            .loading-heart-bg {
+                font-size: 60px;
+                line-height: 60px;
+            }
+            .loading-heart-fill span {
+                font-size: 60px;
+                line-height: 60px;
+            }
         }
 
         /* =========================================================
-           UTILITY - hidden scrollbar for some elements
+           UTILITY
            ========================================================= */
         .no-scrollbar::-webkit-scrollbar {
             width: 0;
             background: transparent;
         }
 
-        /* Loading screen for galaxy */
         .galaxy-loading {
             position: absolute;
             top: 50%;
@@ -791,9 +913,24 @@
 <body>
 
     <!-- ==========================================================
+    LOADING SCREEN
+    ========================================================== -->
+    <div id="loadingScreen">
+        <div class="loading-title">Loading Love ❤️</div>
+        <div class="loading-heart-container">
+            <div class="loading-heart-bg">❤️</div>
+            <div class="loading-heart-fill" id="heartFill">
+                <span>❤️</span>
+            </div>
+        </div>
+        <div class="loading-percent" id="loadingPercent">0%</div>
+        <div class="loading-text">Mempersiapkan kejutan untuk Rara...</div>
+    </div>
+
+    <!-- ==========================================================
     LANDING PAGE
     ========================================================== -->
-    <div id="landing" class="layer active">
+    <div id="landing" class="layer">
         <div class="floating-container" id="floatingContainer"></div>
 
         <div class="landing-content">
@@ -815,7 +952,7 @@
                 <div class="envelope" id="envelope">
                     <div class="envelope-flap"></div>
                     <div class="envelope-body"></div>
-                    <div class="envelope-heart">❤️</div>
+                    <div class="envelope-heart" id="envelopeHeart">❤️</div>
                     <div class="envelope-letter">
                         <div class="envelope-letter-preview">
                             <span class="big">💌</span>
@@ -824,14 +961,14 @@
                     </div>
                 </div>
             </div>
-            <div class="envelope-hint">Click The Heart ❤️</div>
+            <div class="envelope-hint" id="envelopeHint">Click The Heart ❤️</div>
         </div>
     </div>
 
     <!-- ==========================================================
-    LETTER PAGE
+    LETTER PAGE (Surat lengkap)
     ========================================================== -->
-    <div id="letter" class="layer">
+    <div id="letterPage" class="layer">
         <div class="letter-card" id="letterCard">
             <div class="letter-content" id="letterContent"></div>
             <button class="btn-next" id="btnNext">Next Memory 📸</button>
@@ -880,6 +1017,46 @@
     ========================================================== -->
     <script>
         // ==========================================================
+        // 0. LOADING SCREEN
+        // ==========================================================
+        const loadingScreen = document.getElementById('loadingScreen');
+        const heartFill = document.getElementById('heartFill');
+        const loadingPercent = document.getElementById('loadingPercent');
+
+        let loadProgress = 0;
+
+        function simulateLoading() {
+            const interval = setInterval(() => {
+                loadProgress += Math.random() * 8 + 2;
+                if (loadProgress >= 100) {
+                    loadProgress = 100;
+                    clearInterval(interval);
+                    // Hide loading screen
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hide');
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                            // Start typewriter after loading
+                            startTypewriter();
+                        }, 1500);
+                    }, 400);
+                }
+                updateLoading(loadProgress);
+            }, 200);
+        }
+
+        function updateLoading(progress) {
+            const percent = Math.min(100, Math.round(progress));
+            loadingPercent.textContent = percent + '%';
+            // Clip path: 100% - progress
+            const clip = (100 - percent) + '% 0 0 0';
+            heartFill.style.clipPath = 'inset(' + clip + ')';
+        }
+
+        // Start loading
+        simulateLoading();
+
+        // ==========================================================
         // 1. FLOATING ELEMENTS (Landing & Envelope)
         // ==========================================================
         const floatingEmojis = ['❤️', '🌸', '✨', '🦋', '💖'];
@@ -909,25 +1086,27 @@
         const typewriterText =
             `Today is not just a birthday...\nToday is the day the world\nwas blessed with someone\nincredibly special ❤️`;
 
-        function typewriterEffect(element, text, speed = 60) {
+        let typewriterStarted = false;
+
+        function startTypewriter() {
+            if (typewriterStarted) return;
+            typewriterStarted = true;
+            const element = document.getElementById('typewriter');
             let index = 0;
-            let isNewLine = false;
             element.innerHTML = '';
 
             function type() {
-                if (index < text.length) {
-                    const char = text[index];
+                if (index < typewriterText.length) {
+                    const char = typewriterText[index];
                     if (char === '\n') {
                         element.innerHTML += '<br>';
                     } else {
                         element.innerHTML += char;
                     }
                     index++;
-                    // Randomize speed a bit for natural feel
-                    const delay = speed + (Math.random() * 30 - 15);
+                    const delay = 50 + (Math.random() * 30 - 15);
                     setTimeout(type, delay);
                 } else {
-                    // Add cursor
                     const cursor = document.createElement('span');
                     cursor.className = 'cursor';
                     element.appendChild(cursor);
@@ -935,13 +1114,6 @@
             }
             type();
         }
-
-        // Start typewriter after page loads
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                typewriterEffect(document.getElementById('typewriter'), typewriterText, 50);
-            }, 500);
-        });
 
         // ==========================================================
         // 3. MUSIC
@@ -980,22 +1152,54 @@
         });
 
         // ==========================================================
-        // 5. ENVELOPE → LETTER
+        // 5. ENVELOPE → LETTER (klik heart, amplop terbuka)
         // ==========================================================
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const envelopeEl = document.getElementById('envelope');
-        const letterPage = document.getElementById('letter');
+        const envelopeHeart = document.getElementById('envelopeHeart');
+        const envelopeHint = document.getElementById('envelopeHint');
+        const letterPage = document.getElementById('letterPage');
+        const letterContent = document.getElementById('letterContent');
+        const btnNext = document.getElementById('btnNext');
 
         let envelopeOpened = false;
+        let letterTypingDone = false;
 
-        envelopeWrapper.addEventListener('click', function() {
+        // Teks surat yang benar (rapi)
+        const letterText =
+            `Happy Birthday sayangku, cintaku, Rara Rindu Reski ❤️
+
+        Hari ini adalah hari yang paling istimewa di dunia,
+        karena di hari inilah seseorang yang paling sempurna
+        lahir ke dunia.
+
+        Aku bersyukur setiap hari karena Tuhan mengizinkan
+        aku bertemu denganmu. Kamu adalah hadiah terindah
+        yang pernah aku terima.
+
+        Di usiamu yang ke-21 ini, aku berdoa agar semua
+        kebaikan selalu menyertaimu. Semoga semua impianmu
+        terwujud. Semoga kebahagiaan selalu bersamamu.
+
+        Dan yang terpenting...
+        Semoga aku selalu menjadi bagian dari hidupmu.
+
+        Samat ulang tahun cinta nya bee ❤️
+
+        Dari seseorang yang selalu menyayangimu,
+        Bee`;
+
+        // Click heart to open envelope
+        envelopeHeart.addEventListener('click', function(e) {
+            e.stopPropagation();
             if (envelopeOpened) return;
             envelopeOpened = true;
 
             // Open envelope
             envelopeEl.classList.add('open');
+            envelopeHint.textContent = '💌 Surat terbuka...';
 
-            // After envelope opens, go to letter
+            // After envelope opens, show letter page
             setTimeout(() => {
                 // Fade envelope
                 envelope.classList.remove('active');
@@ -1009,36 +1213,16 @@
             }, 1800);
         });
 
+        // Also click on wrapper as fallback
+        envelopeWrapper.addEventListener('click', function(e) {
+            if (e.target === envelopeHeart) return;
+            if (envelopeOpened) return;
+            envelopeHeart.click();
+        });
+
         // ==========================================================
         // 6. LETTER TYPEWRITER
         // ==========================================================
-        const letterContent = document.getElementById('letterContent');
-        const btnNext = document.getElementById('btnNext');
-
-        const letterText =
-            `Happy Birthday sayangku, cintaku, Rara Rindu Reski ❤️
-
-        Hari ini adalah hari yang paling istimewa di dunia,
-        karena di hari inilah seseorang yang paling sempurna
-        lahir ke dunia.
-
-        Aku bersyukur setiap hari karena Tuhan mengizinkan
-        aku bertemu denganmu. Kamu adalah hadiah terindah
-        yang pernah aku terima.
-
-        Di usiamu yang ke-<span class="highlight">21</span> ini, aku berdoa agar semua
-        kebaikan selalu menyertaimu. Semoga semua impianmu
-        terwujud. Semoga kebahagiaan selalu bersamamu.
-
-        Dan yang terpenting...
-        Semoga aku selalu menjadi bagian dari hidupmu.
-
-        <span class="highlight">Samat ulang tahun cinta nya bee ❤️</span>
-
-        <span class="sign">Dari seseorang yang selalu menyayangimu,<br>Bee</span>`;
-
-        let letterTypingDone = false;
-
         function startLetterTypewriter() {
             let index = 0;
             letterContent.innerHTML = '';
@@ -1060,7 +1244,6 @@
                 }
             }
 
-            // Start after a small delay
             setTimeout(typeLetter, 600);
         }
 
@@ -1115,7 +1298,6 @@
                 `;
                 grid.appendChild(card);
 
-                // Staggered appearance
                 setTimeout(() => {
                     card.classList.add('visible');
                 }, 200 + index * 180);
@@ -1141,11 +1323,12 @@
         });
 
         // ==========================================================
-        // 10. THREE.JS GALAXY
+        // 10. THREE.JS GALAXY - PLANET SATURNUS DENGAN CINCIN
         // ==========================================================
         let galaxyInitialized = false;
         let scene, camera, renderer, controls;
-        let particles;
+        let particleSystem;
+        let ringSystem;
         let animationId;
         let finalMessageShown = false;
         let zoomCheckInterval = null;
@@ -1161,9 +1344,9 @@
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
             script.onload = function() {
-                // Load OrbitControls
                 const controlsScript = document.createElement('script');
-                controlsScript.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
+                controlsScript.src =
+                'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
                 controlsScript.onload = function() {
                     loading.style.display = 'none';
                     setupGalaxyScene();
@@ -1188,8 +1371,8 @@
 
             // Camera
             const aspect = container.clientWidth / container.clientHeight;
-            camera = new THREE.PerspectiveCamera(60, aspect, 0.1, 1000);
-            camera.position.set(0, 5, 18);
+            camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
+            camera.position.set(0, 4, 20);
 
             // Renderer
             renderer = new THREE.WebGLRenderer({
@@ -1205,91 +1388,147 @@
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
-            controls.rotateSpeed = 0.8;
-            controls.zoomSpeed = 1.2;
-            controls.minDistance = 2;
-            controls.maxDistance = 40;
+            controls.rotateSpeed = 0.6;
+            controls.zoomSpeed = 1.0;
+            controls.minDistance = 2.5;
+            controls.maxDistance = 45;
             controls.target.set(0, 0, 0);
             controls.update();
 
-            // --- CREATE GALAXY PARTICLES ---
-            const particleCount = 2000;
-            const positions = new Float32Array(particleCount * 3);
-            const sizes = new Float32Array(particleCount);
-            const colors = new Float32Array(particleCount * 3);
-            const randoms = new Float32Array(particleCount);
-
-            const colorPalette = [
-                new THREE.Color('#ff80ab'), // pink
-                new THREE.Color('#f06292'), // rose
-                new THREE.Color('#e91e63'), // magenta
-                new THREE.Color('#ad1457'), // crimson
-                new THREE.Color('#f48fb1'), // light pink
-                new THREE.Color('#d81b60'), // deep pink
-            ];
-
-            for (let i = 0; i < particleCount; i++) {
-                // Spiral galaxy shape
-                const radius = 2 + Math.random() * 12;
-                const angle = Math.random() * Math.PI * 2;
-                const spiralFactor = 0.5;
-                const armAngle = angle + radius * spiralFactor;
-
-                // Random offset for thickness
-                const spread = 0.3 + (radius / 14) * 0.5;
-                const x = Math.cos(armAngle) * radius + (Math.random() - 0.5) * spread;
-                const z = Math.sin(armAngle) * radius + (Math.random() - 0.5) * spread;
-                const y = (Math.random() - 0.5) * spread * 0.6;
-
-                positions[i * 3] = x;
-                positions[i * 3 + 1] = y;
-                positions[i * 3 + 2] = z;
-
-                // Size: bigger in center, smaller at edges
-                const sizeFactor = 1 - (radius / 14) * 0.7;
-                sizes[i] = 0.6 + Math.random() * 1.4 * (0.4 + sizeFactor * 0.6);
-
-                // Color: based on radius
-                const colorIndex = Math.floor(Math.random() * colorPalette.length);
-                const color = colorPalette[colorIndex].clone();
-                // Brighter in center
-                const brightness = 0.7 + (1 - radius / 14) * 0.3;
-                color.multiplyScalar(brightness);
-                colors[i * 3] = color.r;
-                colors[i * 3 + 1] = color.g;
-                colors[i * 3 + 2] = color.b;
-
-                randoms[i] = Math.random() * Math.PI * 2;
-            }
-
-            // Create texture with "Bee ❤️ Rara" text
+            // --- BUAT TEXTURE "Bee ❤️ Rara" ---
             const texture = createTextTexture();
 
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            // ==========================================================
+            // PART 1: BOLA PLANET (BULAT DENGAN TEKS)
+            // ==========================================================
+            const planetParticleCount = 4000;
+            const planetPositions = new Float32Array(planetParticleCount * 3);
+            const planetSizes = new Float32Array(planetParticleCount);
+            const planetColors = new Float32Array(planetParticleCount * 3);
+            const planetRandoms = new Float32Array(planetParticleCount);
 
-            const material = new THREE.PointsMaterial({
-                size: 0.25,
+            const colorPalette = [
+                new THREE.Color('#ff80ab'),
+                new THREE.Color('#f06292'),
+                new THREE.Color('#e91e63'),
+                new THREE.Color('#ad1457'),
+                new THREE.Color('#f48fb1'),
+                new THREE.Color('#d81b60'),
+                new THREE.Color('#ff4081'),
+            ];
+
+            // Buat bola dengan distribusi sphere
+            for (let i = 0; i < planetParticleCount; i++) {
+                // Radius planet: 2.5 - 4.5 (bervariasi untuk tekstur)
+                const radius = 2.5 + Math.random() * 2.0;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+
+                const x = radius * Math.sin(phi) * Math.cos(theta);
+                const y = radius * Math.cos(phi);
+                const z = radius * Math.sin(phi) * Math.sin(theta);
+
+                planetPositions[i * 3] = x;
+                planetPositions[i * 3 + 1] = y;
+                planetPositions[i * 3 + 2] = z;
+
+                // Size: bervariasi
+                planetSizes[i] = 0.2 + Math.random() * 0.5;
+
+                // Warna: pink dengan variasi
+                const color = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
+                const brightness = 0.7 + Math.random() * 0.3;
+                color.multiplyScalar(brightness);
+                planetColors[i * 3] = color.r;
+                planetColors[i * 3 + 1] = color.g;
+                planetColors[i * 3 + 2] = color.b;
+
+                planetRandoms[i] = Math.random() * Math.PI * 2;
+            }
+
+            const planetGeo = new THREE.BufferGeometry();
+            planetGeo.setAttribute('position', new THREE.BufferAttribute(planetPositions, 3));
+            planetGeo.setAttribute('size', new THREE.BufferAttribute(planetSizes, 1));
+            planetGeo.setAttribute('color', new THREE.BufferAttribute(planetColors, 3));
+
+            const planetMat = new THREE.PointsMaterial({
+                size: 0.3,
                 map: texture,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false,
                 transparent: true,
                 vertexColors: true,
-                opacity: 0.92,
+                opacity: 0.9,
                 sizeAttenuation: true,
             });
 
-            particles = new THREE.Points(geometry, material);
-            scene.add(particles);
+            particleSystem = new THREE.Points(planetGeo, planetMat);
+            scene.add(particleSystem);
 
-            // Add some ambient stars (tiny dots)
+            // ==========================================================
+            // PART 2: CINCIN SATURNUS
+            // ==========================================================
+            const ringCount = 5000;
+            const ringPositions = new Float32Array(ringCount * 3);
+            const ringSizes = new Float32Array(ringCount);
+            const ringColors = new Float32Array(ringCount * 3);
+
+            for (let i = 0; i < ringCount; i++) {
+                // Radius cincin: 5.5 - 9.5
+                const radius = 5.5 + Math.random() * 4.0;
+                const angle = Math.random() * Math.PI * 2;
+
+                // Ketebalan cincin tipis
+                const thickness = 0.3 + Math.random() * 0.5;
+                const yOffset = (Math.random() - 0.5) * thickness;
+
+                const x = radius * Math.cos(angle);
+                const z = radius * Math.sin(angle);
+                const y = yOffset * 0.8;
+
+                ringPositions[i * 3] = x;
+                ringPositions[i * 3 + 1] = y;
+                ringPositions[i * 3 + 2] = z;
+
+                // Size ring: lebih kecil
+                ringSizes[i] = 0.15 + Math.random() * 0.35;
+
+                // Warna ring: pink lebih terang
+                const color = colorPalette[Math.floor(Math.random() * colorPalette.length)].clone();
+                const brightness = 0.5 + Math.random() * 0.5;
+                color.multiplyScalar(brightness);
+                ringColors[i * 3] = color.r;
+                ringColors[i * 3 + 1] = color.g;
+                ringColors[i * 3 + 2] = color.b;
+            }
+
+            const ringGeo = new THREE.BufferGeometry();
+            ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPositions, 3));
+            ringGeo.setAttribute('size', new THREE.BufferAttribute(ringSizes, 1));
+            ringGeo.setAttribute('color', new THREE.BufferAttribute(ringColors, 3));
+
+            const ringMat = new THREE.PointsMaterial({
+                size: 0.2,
+                map: texture,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+                transparent: true,
+                vertexColors: true,
+                opacity: 0.6,
+                sizeAttenuation: true,
+            });
+
+            ringSystem = new THREE.Points(ringGeo, ringMat);
+            scene.add(ringSystem);
+
+            // ==========================================================
+            // PART 3: BINTANG LATAR BELAKANG
+            // ==========================================================
             const starGeo = new THREE.BufferGeometry();
-            const starCount = 800;
+            const starCount = 1000;
             const starPos = new Float32Array(starCount * 3);
             for (let i = 0; i < starCount; i++) {
-                const r = 25 + Math.random() * 30;
+                const r = 30 + Math.random() * 40;
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos(2 * Math.random() - 1);
                 starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
@@ -1299,24 +1538,32 @@
             starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
             const starMat = new THREE.PointsMaterial({
                 color: 0xffffff,
-                size: 0.08,
+                size: 0.06,
                 transparent: true,
-                opacity: 0.6,
+                opacity: 0.5,
                 sizeAttenuation: true,
             });
             const stars = new THREE.Points(starGeo, starMat);
             scene.add(stars);
 
-            // Add subtle glow (point light)
-            const light = new THREE.PointLight(0xe91e63, 0.3, 30);
+            // ==========================================================
+            // PART 4: LIGHTING
+            // ==========================================================
+            const light = new THREE.PointLight(0xe91e63, 0.5, 30);
             light.position.set(0, 0, 0);
             scene.add(light);
 
-            // Add ambient light
-            const ambient = new THREE.AmbientLight(0x222244, 0.3);
+            const ambient = new THREE.AmbientLight(0x222244, 0.2);
             scene.add(ambient);
 
-            // Resize handler
+            // Tambahan light dari samping
+            const light2 = new THREE.DirectionalLight(0xff80ab, 0.3);
+            light2.position.set(5, 5, 5);
+            scene.add(light2);
+
+            // ==========================================================
+            // PART 5: RESIZE & ANIMATION
+            // ==========================================================
             window.addEventListener('resize', onResize);
 
             // Start animation
@@ -1333,21 +1580,17 @@
             canvas.height = size;
             const ctx = canvas.getContext('2d');
 
-            // Transparent background
             ctx.clearRect(0, 0, size, size);
 
-            // Draw text
             const text = 'Bee ❤️ Rara';
             const fontSize = 32;
             ctx.font = `bold ${fontSize}px 'Arial', sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            // Glow effect
-            ctx.shadowColor = 'rgba(233, 30, 99, 0.5)';
-            ctx.shadowBlur = 15;
+            ctx.shadowColor = 'rgba(233, 30, 99, 0.6)';
+            ctx.shadowBlur = 20;
 
-            // Gradient text
             const gradient = ctx.createLinearGradient(0, 0, size, size);
             gradient.addColorStop(0, '#ff80ab');
             gradient.addColorStop(0.5, '#e91e63');
@@ -1355,10 +1598,9 @@
             ctx.fillStyle = gradient;
             ctx.fillText(text, size / 2, size / 2);
 
-            // Second pass for clarity
             ctx.shadowBlur = 0;
             ctx.fillStyle = '#fff';
-            ctx.globalAlpha = 0.15;
+            ctx.globalAlpha = 0.1;
             ctx.fillText(text, size / 2 + 1, size / 2 + 1);
             ctx.globalAlpha = 1;
 
@@ -1370,9 +1612,12 @@
         function animateGalaxy() {
             animationId = requestAnimationFrame(animateGalaxy);
 
-            // Slow rotation
-            if (particles) {
-                particles.rotation.y += 0.0004;
+            // Rotasi planet dan cincin
+            if (particleSystem) {
+                particleSystem.rotation.y += 0.002;
+            }
+            if (ringSystem) {
+                ringSystem.rotation.y += 0.003;
             }
 
             controls.update();
@@ -1391,34 +1636,23 @@
         function checkZoomForFinalMessage() {
             if (!camera) return;
             const distance = camera.position.distanceTo(controls.target);
-            // If zoomed in close enough
-            if (distance < 5 && !finalMessageShown) {
+            if (distance < 4.5 && !finalMessageShown) {
                 finalMessageShown = true;
                 const finalMsg = document.getElementById('finalMessage');
                 finalMsg.classList.add('show');
-                // Also slow down rotation
-                if (particles) {
-                    // We'll slow it in the animation loop via a flag
-                }
                 clearInterval(zoomCheckInterval);
             }
         }
 
-        // Clean up galaxy on page unload
+        // Clean up
         window.addEventListener('beforeunload', function() {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-            if (zoomCheckInterval) {
-                clearInterval(zoomCheckInterval);
-            }
-            if (renderer) {
-                renderer.dispose();
-            }
+            if (animationId) cancelAnimationFrame(animationId);
+            if (zoomCheckInterval) clearInterval(zoomCheckInterval);
+            if (renderer) renderer.dispose();
         });
 
         // ==========================================================
-        // 11. KEYBOARD SHORTCUT (optional)
+        // 11. KEYBOARD SHORTCUT
         // ==========================================================
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && landing.classList.contains('active')) {
@@ -1427,12 +1661,10 @@
         });
 
         // ==========================================================
-        // 12. PREVENT DEFAULT TOUCH BEHAVIOR ON GALAXY
+        // 12. PREVENT TOUCH
         // ==========================================================
         document.getElementById('galaxy-canvas').addEventListener('touchstart', function(e) {
-            if (e.target === this) {
-                e.preventDefault();
-            }
+            if (e.target === this) e.preventDefault();
         }, { passive: false });
 
         console.log('❤️ Happy Birthday Rara Rindu Reski! ❤️');
